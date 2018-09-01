@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const app = require('../app');
+// let debug = require('debug')('express:server');
+const http = require('http');
+
+const port = process.env.PORT || '3000';
+
+app.set('port', port);
+
+const server = http.createServer(app);
+
+server.listen(port);
+
+server.on('error', function (error) {
+    console.log(error);
+});
+
+server.on('listening', function () {
+
+    let addr = server.address();
+
+    let ip = addr.address === '::' ? 'localhost' : addr.address;
+
+    console.log(`Listening on ${ip}:${addr.port}`);
+
+});
