@@ -7,6 +7,7 @@ import { MainPageComponent } from './components/pages/main-page/main-page.compon
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { HeaderComponent } from './components/main/header/header.component';
 import { FooterComponent } from './components/main/footer/footer.component';
+import { TreeModule } from 'angular-tree-component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FooterComponent } from './components/main/footer/footer.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    TreeModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
