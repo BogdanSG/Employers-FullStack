@@ -15,7 +15,6 @@ const EmployeeImg = connection.define('employee_img', {
         allowNull: false,
     },
 
-
 },{
     createdAt: false,
     updatedAt: false

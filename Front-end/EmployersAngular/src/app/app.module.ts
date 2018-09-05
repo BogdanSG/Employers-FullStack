@@ -8,6 +8,7 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { HeaderComponent } from './components/main/header/header.component';
 import { FooterComponent } from './components/main/footer/footer.component';
 import { TreeModule } from 'angular-tree-component';
+import { HttpClientModule }   from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TreeModule } from 'angular-tree-component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     TreeModule.forRoot()
   ],
   providers: [],

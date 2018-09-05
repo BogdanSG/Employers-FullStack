@@ -1,7 +1,7 @@
 const Employee = require('../model/Employee');
 const Position = require('../model/Position');
 
-const countEmployeers = 100000;
+const countEmployeers = 50000; //+-10%
 
 const firstNameArr = [
     'Александр',
@@ -67,15 +67,15 @@ const surNameArr = [
 
 (async function(){
 
-    let countDirectors = Math.round(countEmployeers * 0.05); //5%
+    let countDirectors = Math.round(countEmployeers * 0.001); //0.1%
 
-    let countChief = Math.round(countEmployeers * 0.10); //10%
+    let countChief = Math.round(countEmployeers * 0.05); //5%
 
     let countMainWorker = Math.round(countEmployeers * 0.15); //15%
 
-    let countForeman = Math.round(countEmployeers * 0.25); //25%
+    let countForeman = Math.round(countEmployeers * 0.25); //35%
 
-    let countWorker = Math.round(countEmployeers * 0.45); //45%
+    let countWorker = Math.round(countEmployeers * 0.449); //44.9%
 
     await Position.create({
         Title: 'Director'

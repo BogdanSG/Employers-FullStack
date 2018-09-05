@@ -10,7 +10,7 @@ const Position = connection.define('position', {
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
     },
-    Title: {
+    Position: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },

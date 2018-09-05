@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {EmployeeService} from '../../../services/employee.service';
+import { ITreeOptions } from 'angular-tree-component'
 
 @Component({
   selector: 'app-home-page',
@@ -7,41 +9,96 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  nodes = [
-    {
-      id: 1,
-      name: 'root1',
-      children: [
-        { id: 2, name: 'child1' },
-        { id: 3, name: 'child2' }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
-        }
-      ]
-    }
-  ];
-  options = {};
+  nodes : Array<any> = [];
+  options : ITreeOptions = {
+    getChildren: this.getChildren.bind(this)
+  };
 
-  onFocus(event: any){
+  constructor(private EmployeeService : EmployeeService) {
 
-    console.log(event);
-
-  }//onFocus
-
-  constructor() {
+    this.nodes.push({
+      id: 0,
+      name: 'Employees',
+      hasChildren: true
+    });
 
   }//constructor
+
+  async getChildren(node: any) {
+
+    let employeeID = node.id != 0 ? node.id : null;
+
+    let data : any = await this.EmployeeService.getTreeEmployee(employeeID);
+
+    let nodes = [];
+
+    if(data.code === 200 && data.data.length > 0){
+
+      data.data.forEach(item => {
+
+        nodes.push({
+          id: item.EmployeeID,
+          name: `${item.FirstName} ${item.LastName} ${item.SurName} (${item.Position}) (${item.CountEmployees})`,
+          hasChildren: item.CountEmployees > 0 ? true : false
+        });
+
+      });
+
+      return nodes;
+
+    }//if
+
+    const newNodes = nodes.map((c) => Object.assign({}, c));
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(newNodes), 500);
+    });
+
+  }
+
+  //
+  // getChildren(node: any){
+  //
+  //   // let nodes = [];
+  //   //
+  //   // this.EmployeeService.getTreeEmployee().then(function (data : any) {
+  //   //
+  //   //   if(data.code === 200 && data.data.length > 0){
+  //   //
+  //   //     data.data.forEach(item => {
+  //   //
+  //   //       nodes.push({
+  //   //         id: item.EmployeeID,
+  //   //         name: `${item.FirstName} ${item.LastName} ${item.SurName} (${item.Position})`
+  //   //       });
+  //   //
+  //   //     });
+  //   //
+  //   //     return nodes;
+  //   //
+  //   //   }//if
+  //   //
+  //   // });
+  //
+  //   let nodes = [{
+  //     id: 0,
+  //     name: 'Employees',
+  //     hasChildren: true,
+  //     isExpanded: false
+  //   }];
+  //
+  //   const newNodes = nodes.map((c) => Object.assign({}, c));
+  //
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => resolve(newNodes), 1000);
+  //   });
+  //
+  // }//getChildren
+
+  onActivate(event: any){
+
+
+  }//onFocus
 
   ngOnInit() {
 
