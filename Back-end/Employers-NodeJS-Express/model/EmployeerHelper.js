@@ -47,7 +47,7 @@ async function getFullEmployee(EmployeeID){
         if(EmployeeID){
 
             data = await connectionDB.query(`
-                SELECT e.EmployeeID, e.ChiefID as Chief, p.Position, ei.ImgName, e.FirstName, e.LastName, e.SurName, e.EmploymentDate, e.Salary
+                SELECT e.EmployeeID, e.ChiefID as Chief, p.Position, p.PositionID, ei.ImgName, e.FirstName, e.LastName, e.SurName, e.EmploymentDate, e.Salary
                 FROM \`employees\` AS e
                 JOIN \`positions\` AS p ON p.PositionID = e.PositionID
                 LEFT JOIN \`employee_imgs\` AS ei ON ei.EmployeeImgID = e.EmployeeImgID
@@ -116,8 +116,31 @@ async function getEmployees(offset, limit, orderBy, firstName, lastName, surName
 
 }//getFullEmployee
 
+async function getAllPositions() {
+
+    try {
+
+        let data = [];
+
+        data = await connectionDB.query(`
+                SELECT p.PositionID, p.Position
+                FROM \`positions\` AS p
+            `, { type: 'SELECT' });
+
+        return data;
+
+    }//try
+    catch (Ex) {
+
+        throw Ex;
+
+    }//catch
+
+}//getTreeEmployee
+
 module.exports = {
     getTreeEmployee: getTreeEmployee,
     getFullEmployee: getFullEmployee,
-    getEmployees: getEmployees
+    getEmployees: getEmployees,
+    getAllPositions: getAllPositions
 };

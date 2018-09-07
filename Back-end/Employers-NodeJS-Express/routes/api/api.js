@@ -44,4 +44,14 @@ router.post('/employee-list', async function getFullEmployee(req, res) {
 
 });
 
+router.post('/positions', async function getFullEmployee(req, res) {
+
+    ApiHelper.ApiTemplate(req, res, function(responce) {
+
+        return EmployeerHelper.getAllPositions();
+
+    });
+
+});
+
 module.exports = router;

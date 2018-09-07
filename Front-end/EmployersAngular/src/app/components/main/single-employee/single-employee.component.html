@@ -1,0 +1,97 @@
+<div *ngIf="Employee && Positions">
+  <div style="padding: 0; margin: 0 0 0 25%;">
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="https://icdn.lenta.ru/images/2014/06/25/10/20140625102948574/pic_5220de379c191981ea18ae399378043b.jpg" alt="" width="420" height="280">
+      <div class="custom-file col-lg-6 col-md-9">
+        <input type="file" class="custom-file-input" id="inputGroupFile01">
+        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 order-md-1">
+        <h4 class="mb-3">Employee Info</h4>
+        <form class="needs-validation" novalidate="">
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label>First name</label>
+              <input type="text" class="form-control" placeholder="Ivan" value="{{Employee.FirstName}}">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Last name</label>
+              <input type="text" class="form-control" placeholder="Ivanov" value="{{Employee.LastName}}">
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Sur name</label>
+              <input type="text" class="form-control" placeholder="Ivanovich" value="{{Employee.SurName}}">
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-8 mb-6">
+              <label>Chief</label>
+              <div class="form-control">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>ChiefID</label>
+              <input type="number" class="form-control" placeholder="" value="{{Employee.Chief.EmployeeID}}">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-6">
+              <label>Position</label>
+              <select class="custom-select d-block w-100">
+                <option *ngFor="let p of Positions" value="{{p.PositionID}}">{{p.Position}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div class="col-md-8 mb-6">
+              <label>Employment Date</label>
+              <input type="datetime-local" class="form-control" placeholder="" value="{{Employee.EmploymentDate}}">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Salary</label>
+              <input type="number" class="form-control" placeholder="100000" value="{{Employee.Salary}}">
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px; margin-bottom: 30px">
+            <div class="col-md-4">
+              <button class="btn btn-primary btn-lg btn-block">Edit</button>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-warning btn-lg btn-block">Update</button>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-danger btn-lg btn-block">Delete</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

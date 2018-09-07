@@ -14,9 +14,20 @@ async function ApiTemplate(req, res, callback){
 
         }//if
 
-        responce.code = 200;
-        responce.message = 'OK';
-        responce.data = data;
+        if(data.length > 0){
+
+            responce.code = 200;
+            responce.message = 'OK';
+            responce.data = data;
+
+        }//if
+        else {
+
+            responce.code = 404;
+            responce.message = 'Not Found';
+            responce.data = null;
+
+        }//else
 
         res.status(responce.code);
         res.send(responce);
