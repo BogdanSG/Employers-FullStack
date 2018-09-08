@@ -14,6 +14,12 @@ import { TreeviewComponent } from './components/main/treeview/treeview.component
 import { SingleEmployeeComponent } from './components/main/single-employee/single-employee.component';
 import { SingleEmployeePageComponent } from './components/pages/single-employee-page/single-employee-page.component';
 import {EmployeeService} from './services/employee.service';
+import { ListComponent } from './components/main/list/list.component';
+import { ListPageComponent } from './components/pages/list-page/list-page.component';
+import { SignInComponent } from './components/main/sign-in/sign-in.component';
+import { SignUpComponent } from './components/main/sign-up/sign-up.component';
+import { SignUpPageComponent } from './components/pages/sign-up-page/sign-up-page.component';
+import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-page.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +31,13 @@ import {EmployeeService} from './services/employee.service';
     TreeviewPageComponent,
     TreeviewComponent,
     SingleEmployeeComponent,
-    SingleEmployeePageComponent
+    SingleEmployeePageComponent,
+    ListComponent,
+    ListPageComponent,
+    SignInComponent,
+    SignUpComponent,
+    SignUpPageComponent,
+    SignInPageComponent
   ],
   imports: [
     BrowserModule,

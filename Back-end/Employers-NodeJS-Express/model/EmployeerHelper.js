@@ -138,9 +138,44 @@ async function getAllPositions() {
 
 }//getTreeEmployee
 
+async function findUserByLogin(login) {
+
+    try {
+
+        let data = [];
+
+        let Login = login ? login : '';
+
+        data = await connectionDB.query(`
+                SELECT *
+                FROM \`users\` AS u
+                WHERE u.Login = '${Login}'
+            `, { type: 'SELECT' });
+
+        if(data.length > 0){
+
+            return data[0];
+
+        }//if
+        else {
+
+            return null;
+
+        }//else
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getTreeEmployee
+
 module.exports = {
     getTreeEmployee: getTreeEmployee,
     getFullEmployee: getFullEmployee,
     getEmployees: getEmployees,
-    getAllPositions: getAllPositions
+    getAllPositions: getAllPositions,
+    findUserByLogin: findUserByLogin
 };

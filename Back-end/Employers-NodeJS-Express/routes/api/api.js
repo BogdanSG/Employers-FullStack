@@ -1,57 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const ApiHelper = require('../../model/ApiHelper');
-const EmployeerHelper = require('../../model/EmployeerHelper');
+const ApiController = require('../../model/controllers/ApiController');
 
-router.post('/tree-employee', function(req, res) {
+router.post('/tree-employee', ApiController.treeEmployee);
 
-    ApiHelper.ApiTemplate(req, res, function(responce) {
+router.post('/full-employee', ApiController.fullEmployee);
 
-        let EmployeeID = req.body.id;
+router.post('/employee-list', ApiController.employeeList);
 
-        return EmployeerHelper.getTreeEmployee(EmployeeID);
-
-    });
-
-});
-
-router.post('/full-employee', async function getFullEmployee(req, res) {
-
-    ApiHelper.ApiTemplate(req, res, function(responce) {
-
-        let EmployeeID = req.body.id;
-
-        return EmployeerHelper.getFullEmployee(EmployeeID);
-
-    });
-
-});
-
-router.post('/employee-list', async function getFullEmployee(req, res) {
-
-    ApiHelper.ApiTemplate(req, res, function(responce) {
-
-        let offset = req.body.offset;
-        let limit = req.body.limit;
-        let orderBy = req.body.orderBy;
-        let firstName = req.body.firstName;
-        let lastName = req.body.lastName;
-        let surName = req.body.surName;
-
-        return EmployeerHelper.getEmployees(offset, limit, orderBy, firstName, lastName, surName);
-
-    });
-
-});
-
-router.post('/positions', async function getFullEmployee(req, res) {
-
-    ApiHelper.ApiTemplate(req, res, function(responce) {
-
-        return EmployeerHelper.getAllPositions();
-
-    });
-
-});
+router.post('/positions', ApiController.positions);
 
 module.exports = router;
