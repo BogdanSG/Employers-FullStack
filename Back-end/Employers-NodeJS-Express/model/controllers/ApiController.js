@@ -1,6 +1,10 @@
 const ApiHelper = require('../ApiHelper');
 const EmployeerHelper = require('../EmployeerHelper');
-const passport = require('passport');
+const User = require('../../database/model/User');
+const jwt = require('jsonwebtoken');
+const config = require('../../config.json');
+const Response = require('../Response');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
 
@@ -51,64 +55,119 @@ module.exports = {
         });
 
     },//positions
-    signIn: function (req, res) {
+    signIn: async function (req, res) {
 
-        passport.authenticate('local',
-            function(err, user, info) {
+        let response = new Response();
 
-                let responce = {};
+        try {
 
-                try{
+            let userData = { username: req.body.username, password: req.body.password };
 
-                    if(err){
+            if(userData.username && userData.password){
 
-                        responce.code = 500;
-                        responce.message = 'Error';
-                        responce.data = err;
+                let user = await User.findOne({
+                    where: {
+                        Login: userData.username
+                    }
+                });
 
-                    }//if
-                    else {
+                if (user && bcrypt.compareSync(userData.password, user.Password)) {
 
-                        req.logIn(user, function(err) {
+                    const token = jwt.sign({ UserID: user.UserID }, config.secret);
 
-                            if(err){
+                    response.code = 200;
+                    response.message = 'OK';
+                    response.data = {
+                        user: user.Login,
+                        token: token
+                    };
 
-                                responce.code = 500;
-                                responce.message = 'Error';
-                                responce.data = err;
+                    res.json(response);
 
-                            }//if
-                            else {
+                }//if
+                else {
 
-                                responce.code = 200;
-                                responce.message = 'OK';
-                                responce.data = {};
+                    response.code = 404;
+                    response.message = 'Username or password is incorrect';
+                    response.data = {};
 
-                            }//else
+                    res.json(response);
 
-                            res.status(responce.code);
-                            res.send(responce);
+                }//else
 
-                        });
+            }//if
 
-                    }//else
+        }//try
+        catch (Ex) {
 
-                    res.status(responce.code);
-                    res.send(responce);
+            response.code = 500;
+            response.message = Ex.message;
+            response.data = Ex;
 
-                }//try
-                catch (Ex) {
+            res.json(response);
 
-                    responce.code = 500;
-                    responce.message = Ex.message;
+        }//catch
 
-                    res.status(responce.code);
-                    res.send(responce);
+    },//signIn
+    signUp: async function (req, res) {
 
-                }//catch
+        let response = new Response();
 
-            }
-        )(req, res);
+        try {
+
+            let userData = { username: req.body.username, password: req.body.password };
+
+            if(userData.username && userData.password){
+
+                let user = await User.findOne({
+                    where: {
+                        Login: userData.username
+                    }
+                });
+
+                if(!user){
+
+                    userData.password = bcrypt.hashSync(userData.password, 10);
+
+                    user = await User.create({
+                        Login: userData.username,
+                        Password: userData.password
+                    });
+
+                    const token = jwt.sign({ UserID: user.UserID }, config.secret);
+
+                    response.code = 200;
+                    response.message = 'OK';
+                    response.data = {
+                        user: user.Login,
+                        token: token
+                    };
+
+                    res.json(response);
+
+                }//if
+                else {
+
+                    response.code = 500;
+                    response.message = 'Username is already taken';
+                    response.data = {};
+
+                    res.json(response);
+
+                }//esle
+
+            }//if
+
+        }//try
+        catch (Ex) {
+
+            response.code = 500;
+            response.message = Ex.message;
+            response.data = Ex;
+
+            res.json(response);
+
+        }//catch
 
     },//signIn
 

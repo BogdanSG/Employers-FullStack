@@ -1,14 +1,8 @@
 const express = require('express');
-const session = require('express-session');
-const passport = require('passport');
 const bodyParser = require('body-parser');
 const indexRouter = require('./routes/index/index');
 const apiRouter = require('./routes/api/api');
-const PassportLocalStrategy = require('./model/PassportLocalStrategy');
-
-passport.use(PassportLocalStrategy.LocalStrategy());
-passport.deserializeUser = PassportLocalStrategy.deserializeUser;
-passport.serializeUser = PassportLocalStrategy.serializeUser;
+const jwt = require('./model/JwtHelper');
 
 const app = express();
 
@@ -28,15 +22,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: 'Employee Application Secret (73495375)'
-}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(jwt());
 
 app.use(express.static('./public'));
 

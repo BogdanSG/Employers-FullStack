@@ -20,6 +20,8 @@ import { SignInComponent } from './components/main/sign-in/sign-in.component';
 import { SignUpComponent } from './components/main/sign-up/sign-up.component';
 import { SignUpPageComponent } from './components/pages/sign-up-page/sign-up-page.component';
 import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-page.component';
+import {AuthenticationService} from './services/authentication.service';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,10 +44,11 @@ import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-pag
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule,
     TreeModule.forRoot()
   ],
-  providers: [EmployeeService],
+  providers: [EmployeeService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

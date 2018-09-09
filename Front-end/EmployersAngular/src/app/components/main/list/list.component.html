@@ -1,4 +1,41 @@
-<div style="text-align:  center; padding: 10% 10% 10% 30%;">
-  <p style="font-size: 70px; font-weight: 700; color: #a39e9e91;">This Page For Authorized Users</p>
+<div *ngIf="isAuthorized">
+  <div *ngIf="employeeList.length > 0">
+    <table class="table table-hover table-bordered">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">FirstName</th>
+        <th scope="col">LastName</th>
+        <th scope="col">SurName</th>
+        <th scope="col">Position</th>
+        <th scope="col">Has Chief</th>
+        <th scope="col">Salary</th>
+        <th scope="col">Employment Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let employee of employeeList">
+        <th scope="row">{{employee.EmployeeID}}</th>
+        <td>{{employee.FirstName}}</td>
+        <td>{{employee.LastName}}</td>
+        <td>{{employee.SurName}}</td>
+        <td>{{employee.Position}}</td>
+        <td>{{employee.ChiefID ? 'True' : 'False'}}</td>
+        <td>{{employee.Salary}}</td>
+        <td>{{employee.EmploymentDate}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="employeeList.length === 0">
+    <div style="text-align:  center; padding: 10% 10% 10% 30%;">
+      <p style="font-size: 70px; font-weight: 700; color: #a39e9e91;">Employee List Empty</p>
+    </div>
+  </div>
+</div>
+<div *ngIf="!isAuthorized">
+  <div style="text-align:  center; padding: 10% 10% 10% 30%;">
+    <p style="font-size: 70px; font-weight: 700; color: #a39e9e91;">This Page For Authorized Users</p>
+  </div>
 </div>
 

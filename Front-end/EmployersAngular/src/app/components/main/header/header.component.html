@@ -15,8 +15,14 @@
         </li>
       </ul>
       <form class="form-inline mt-2 mt-md-0">
-        <a class="btn btn-outline-success my-2 my-sm-0" routerLink="/sign-in">Sign in</a>
-        <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 10px" routerLink="/sign-up">Sign up</a>
+        <div *ngIf="!isAuthorized">
+          <a class="btn btn-outline-success my-2 my-sm-0" routerLink="/sign-in">Sign in</a>
+          <a class="btn btn-outline-warning my-2 my-sm-0" style="margin-left: 10px" routerLink="/sign-up">Sign up</a>
+        </div>
+        <div *ngIf="isAuthorized">
+          <div class="my-2 my-sm-0 navbar-text" style="color: #eff3f3">Hello, {{UserName}}</div>
+          <button class="btn btn-outline-danger my-2 my-sm-0" style="margin-left: 10px" (click)="onLogOut()">Log out</button>
+        </div>
       </form>
     </div>
   </nav>
