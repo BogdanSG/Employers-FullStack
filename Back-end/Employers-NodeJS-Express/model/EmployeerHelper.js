@@ -78,6 +78,32 @@ async function getFullEmployee(EmployeeID){
 
 }//getFullEmployee
 
+async function deleteEmployee(EmployeeID){
+
+    try {
+
+        let data = [];
+
+        if(EmployeeID){
+
+            data = await connectionDB.query(`
+                DELETE FROM \`employees\` 
+                WHERE EmployeeID = ${EmployeeID}
+            `, { type: 'DELETE' });
+
+        }//if
+
+        return data;
+
+    }//try
+    catch (Ex) {
+
+        throw Ex;
+
+    }//catch
+
+}//deleteEmployee
+
 async function getEmployees(offset, limit, orderBy, firstName, lastName, surName){
 
     try {
@@ -142,26 +168,28 @@ async function findUserByLogin(login) {
 
     try {
 
-        let data = [];
+        if(Login){
 
-        let Login = login ? login : '';
-
-        data = await connectionDB.query(`
+            let data = await connectionDB.query(`
                 SELECT *
                 FROM \`users\` AS u
                 WHERE u.Login = '${Login}'
             `, { type: 'SELECT' });
 
-        if(data.length > 0){
+            if(data.length > 0){
 
-            return data[0];
+                return data[0];
+
+            }//if
+            else {
+
+                return null;
+
+            }//else
 
         }//if
-        else {
 
-            return null;
-
-        }//else
+        return null;
 
     }//try
     catch (Ex) {
@@ -172,10 +200,133 @@ async function findUserByLogin(login) {
 
 }//getTreeEmployee
 
+async function getEmployeesIDsByChiefID(ChiefID){
+
+    try {
+
+        let data = [];
+
+        if(ChiefID){
+
+            data = await connectionDB.query(`
+                SELECT e.EmployeeID FROM \`employees\` AS e
+                WHERE e.ChiefID = ${ChiefID}
+            `, { type: 'SELECT' });
+
+            return data;
+
+        }//if
+
+        return data;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getEmployeesByChief
+
+async function getEmployeesIDsByPositionID(EmployeesID){
+
+    try {
+
+        let data = [];
+
+        if(EmployeesID){
+
+            data = await connectionDB.query(`
+                SELECT e.EmployeeID FROM \`employees\` AS e
+                WHERE e.EmployeeID = ${EmployeesID}
+            `, { type: 'SELECT' });
+
+            return data;
+
+        }//if
+
+        return data;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getEmployeesIDByPositionID
+
+async function getPositionIDsByEmployeeID(EmployeeID){
+
+    try {
+
+        if(EmployeeID){
+
+            let data = await connectionDB.query(`
+                SELECT e.PositionID FROM \`employees\` AS e
+                WHERE e.PositionID = ${PositionID}
+            `, { type: 'SELECT' });
+
+            if(data.length > 0){
+
+                return data[0].PositionID;
+
+            }//if
+            else {
+
+                return null;
+
+            }//else
+
+        }//if
+
+        return null;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getEmployeesIDByPositionID
+
+async function updateChiefID(EmployeeID, ChiefID){
+
+    try {
+
+        if(EmployeeID && ChiefID){
+
+            let data = await connectionDB.query(`
+                UPDATE \`employees\` AS e
+                SET e.ChiefID = ${ChiefID}
+                WHERE e.EmployeeID = ${EmployeeID}
+            `, { type: 'UPDATE' });
+
+            return data;
+
+        }//if
+
+        return null;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//updateChiefID
+
 module.exports = {
     getTreeEmployee: getTreeEmployee,
     getFullEmployee: getFullEmployee,
     getEmployees: getEmployees,
     getAllPositions: getAllPositions,
-    findUserByLogin: findUserByLogin
+    findUserByLogin: findUserByLogin,
+    deleteEmployee: deleteEmployee,
+    getEmployeesIDsByChiefID: getEmployeesIDsByChiefID,
+    getPositionIDsByEmployeeID: getPositionIDsByEmployeeID,
+    getEmployeesIDsByPositionID: getEmployeesIDsByPositionID,
+    updateChiefID: updateChiefID,
 };

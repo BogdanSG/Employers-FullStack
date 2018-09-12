@@ -22,6 +22,7 @@ import { SignUpPageComponent } from './components/pages/sign-up-page/sign-up-pag
 import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-page.component';
 import {AuthenticationService} from './services/authentication.service';
 import {FormsModule} from '@angular/forms';
+import {RegexHelperService} from './services/regex-helper.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import {FormsModule} from '@angular/forms';
     HttpClientModule,
     TreeModule.forRoot()
   ],
-  providers: [EmployeeService, AuthenticationService],
+  providers: [EmployeeService, AuthenticationService, RegexHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

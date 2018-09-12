@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
+import {IAuthorize} from '../../../interfaces/iauthorize';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, IAuthorize {
 
   isAuthorized: boolean;
   employeeList: Array<any>;
@@ -146,7 +147,9 @@ export class ListComponent implements OnInit {
       }
     ];
 
-    if(localStorage.getItem('currentUser')){
+    let user = this.AuthenticationService.isAuthorized();
+
+    if(user){
 
       this.isAuthorized = true;
 
@@ -157,19 +160,23 @@ export class ListComponent implements OnInit {
 
     }//else
 
-    this.AuthenticationService.onLogOut(function () {
+    this.AuthenticationService.onSignIn('ListComponent', this.onSignIn.bind(this));
 
-      this.isAuthorized = false;
-
-    }.bind(this));
-
-    this.AuthenticationService.onSignIn(function () {
-
-      this.isAuthorized = true;
-
-    }.bind(this));
+    this.AuthenticationService.onLogOut('ListComponent', this.onLogOut.bind(this));
 
   }//constructor
+
+  onSignIn(){
+
+    this.isAuthorized = true;
+
+  }//onSignIn
+
+  onLogOut(){
+
+    this.isAuthorized = false;
+
+  }//onLogOut
 
   ngOnInit() {
 

@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {Router} from '@angular/router';
+import {IAuthorize} from '../../../interfaces/iauthorize';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, IAuthorize {
 
   isAuthorized: boolean;
   UserName: string;
 
-  constructor(private AuthenticationService : AuthenticationService, private Router: Router) {
+  constructor(private AuthenticationService : AuthenticationService) {
 
-    if(localStorage.getItem('currentUser')){
+    let user = this.AuthenticationService.isAuthorized();
 
-      let data: any = JSON.parse(localStorage.getItem('currentUser'));
+    if(user){
 
-      this.UserName = data.user;
+      this.UserName = user;
       this.isAuthorized = true;
 
     }//if
@@ -29,23 +30,27 @@ export class HeaderComponent implements OnInit {
 
     }//else
 
-    this.AuthenticationService.onLogOut(function () {
+    this.AuthenticationService.onLogOut('HeaderComponent', this.onLogOut.bind(this));
 
-      this.UserName = '';
-      this.isAuthorized = false;
-
-    }.bind(this));
-
-    this.AuthenticationService.onSignIn(function (UserName) {
-
-      this.UserName = UserName;
-      this.isAuthorized = true;
-
-    }.bind(this));
+    this.AuthenticationService.onSignIn('HeaderComponent', this.onSignIn.bind(this));
 
   }//constructor
 
+  onSignIn(UserName : string){
+
+    this.UserName = UserName;
+    this.isAuthorized = true;
+
+  }//onSignIn
+
   onLogOut(){
+
+    this.UserName = '';
+    this.isAuthorized = false;
+
+  }//onLogOut
+
+  onLogOutClick(){
 
     this.AuthenticationService.logOut();
 

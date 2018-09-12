@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config.json');
 const Response = require('../Response');
 const bcrypt = require('bcryptjs');
+const RegexHelper = require('../RegexHelper');
+
+function getRandomInt(min, max) {
+
+    return Math.floor(Math.random() * (max - min)) + min;
+
+}//getRandomInt
 
 module.exports = {
 
@@ -88,7 +95,7 @@ module.exports = {
                 else {
 
                     response.code = 404;
-                    response.message = 'Username or password is incorrect';
+                    response.message = 'Username or Password is incorrect';
                     response.data = {};
 
                     res.json(response);
@@ -116,6 +123,29 @@ module.exports = {
         try {
 
             let userData = { username: req.body.username, password: req.body.password };
+
+            if(!RegexHelper.IsMatch(userData.username, RegexHelper.UserName)){
+
+                response.code = 500;
+                response.message = 'Invalid UserName';
+                response.data = {};
+
+                res.json(response);
+
+                return;
+
+            }//if
+            else if(!RegexHelper.IsMatch(userData.password, RegexHelper.UserPassword)){
+
+                response.code = 500;
+                response.message = 'Invalid Password';
+                response.data = {};
+
+                res.json(response);
+
+                return;
+
+            }//else if
 
             if(userData.username && userData.password){
 
@@ -170,5 +200,88 @@ module.exports = {
         }//catch
 
     },//signIn
+    employeeDelete: async function(req, res){
+
+        let EmployeeID = req.body.id;
+
+        let response = new Response();
+
+        try {
+
+            let EmployeeID = req.body.id;
+
+            if(EmployeeID){
+
+                let Employees = await EmployeerHelper.getEmployeesIDsByChiefID(EmployeeID);
+
+                let PositionID = await EmployeerHelper.getPositionIDsByEmployeeID(EmployeeID);
+
+                if(!PositionID){
+
+                    response.code = 500;
+                    response.message = 'Position Error';
+                    response.data = {};
+
+                    res.json(response);
+
+                    return;
+
+                }//if
+
+                await EmployeerHelper.deleteEmployee(EmployeeID);
+
+                if(Employees.length > 0){
+
+                    let ChiefsIds = await EmployeerHelper.getEmployeesIDsByPositionID(PositionID);
+
+                    if(!ChiefsIds){
+
+                        response.code = 500;
+                        response.message = 'Cheifs Error, Employee deleted';
+                        response.data = {};
+
+                        res.json(response);
+
+                        return;
+
+                    }//if
+
+                    for(let i = 0; i < Employees.length; i ++){
+
+                        await EmployeerHelper.updateChiefID(Employees[i].EmployeeID, ChiefsIds[getRandomInt(0, ChiefsIds.length - 1)]);
+
+                    }//for
+
+                }//if
+
+                response.code = 200;
+                response.message = 'Employee deleted';
+                response.data = {};
+
+                res.json(response);
+
+            }//if
+            else {
+
+                response.code = 500;
+                response.message = 'EmployeeID is undefined';
+                response.data = {};
+
+                res.json(response);
+
+            }//else
+
+        }//try
+        catch (Ex) {
+
+            response.code = 500;
+            response.message = Ex.message;
+            response.data = Ex;
+
+            res.json(response);
+
+        }//catch
+
+    },//employeeDelete
 
 };

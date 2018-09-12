@@ -6,16 +6,45 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthenticationService {
 
-  private onlogOutCallBacks : Array<Function>;
+  private onlogOutCallBacks : Map<String, Function>;
 
-  private onSignInCallBacks : Array<Function>;
+  private onSignInCallBacks : Map<String, Function>;
 
   constructor(private http : HttpClient) {
 
-    this.onlogOutCallBacks = [];
-    this.onSignInCallBacks = [];
+    this.onlogOutCallBacks = new Map<String, Function>();
+    this.onSignInCallBacks = new Map<String, Function>();
 
   }//constructor
+
+  isAuthorized(){
+
+    if(localStorage.getItem('currentUser') && localStorage.getItem('access_token')){
+
+      let user: any = JSON.parse(localStorage.getItem('currentUser'));
+
+      return user;
+
+    }//if
+    else {
+
+      return null;
+
+    }//else
+
+  }//isAuthorized
+
+  GetToken(){
+
+    if(localStorage.getItem('access_token')){
+
+      return JSON.parse(localStorage.getItem('access_token'));
+
+    }//if
+
+    return null;
+
+  }//GetToken
 
   async signIn(user, url = 'http://localhost:3000/api/sign-in'){
 
@@ -57,11 +86,12 @@ export class AuthenticationService {
 
     if(result.code === 200 && result.data.token){
 
-      localStorage.setItem('currentUser', JSON.stringify(result.data));
+      localStorage.setItem('currentUser', JSON.stringify(result.data.user));
+      localStorage.setItem('access_token', JSON.stringify(result.data.token));
 
-      this.onSignInCallBacks.forEach(callback => {
+      this.onSignInCallBacks.forEach(callbaks => {
 
-        callback(result.data.user);
+        callbaks(result.data.user);
 
       });
 
@@ -79,24 +109,25 @@ export class AuthenticationService {
   logOut(){
 
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('access_token');
 
-    this.onlogOutCallBacks.forEach(callback => {
+    this.onlogOutCallBacks.forEach(callbaks => {
 
-      callback();
+      callbaks();
 
     });
 
   }//logout
 
-  onLogOut(callback : Function){
+  onLogOut(key: string, callback : Function){
 
-    this.onlogOutCallBacks.push(callback);
+    this.onlogOutCallBacks.set(key, callback);
 
   }//onLogOut
 
-  onSignIn(callback : Function){
+  onSignIn(key: string, callback : Function){
 
-    this.onSignInCallBacks.push(callback);
+    this.onSignInCallBacks.set(key, callback);
 
   }//onLogOut
 

@@ -65,4 +65,22 @@ export class EmployeeService {
 
   }//getAllPositions
 
+  async employeeDelete(employeeID, token, url = `http://localhost:3000/api/employee-delete?access_token=${token}`) {
+
+    try {
+
+      let result = await this.http.post(url, {id: employeeID, access_token: token}).toPromise();
+
+      return result
+
+    }//try
+    catch (ex) {
+
+      console.log("Exception: employeeDelete", ex);
+      return null;
+
+    }//catch
+
+  }//employeeDelete
+
 }//EmployeeService

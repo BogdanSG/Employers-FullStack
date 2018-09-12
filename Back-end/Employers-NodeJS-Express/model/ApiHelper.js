@@ -29,7 +29,6 @@ async function ApiTemplate(req, res, callback){
 
         }//else
 
-        res.status(responce.code);
         res.send(responce);
 
 
@@ -38,8 +37,6 @@ async function ApiTemplate(req, res, callback){
 
         responce.code = 500;
         responce.message = Ex.message;
-
-        res.status(responce.code);
         res.send(responce);
 
     }//catch

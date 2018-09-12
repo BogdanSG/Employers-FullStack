@@ -1,12 +1,15 @@
 <div style="padding: 0; margin: 0 0 0 25%;">
 
   <div class="py-5 text-center">
-    <img class="mb-4" src="/assets/public/img/sign-in-up.png" alt="" width="100" height="100">
+    <img class="mb-4" src="/assets/public/img/user.png" alt="" width="100" height="100">
     <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
-    <input [(ngModel)]="Login" type="text" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Login" required="" autofocus="">
-    <input [(ngModel)]="Password" type="password" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Password">
-    <input [(ngModel)]="ConfirmPassword" type="password" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Confirm Password">
+    <input [ngClass]="{ 'is-invalid': ErrorUsername }" [(ngModel)]="Login" type="text" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Login" required="" autofocus="">
+    <input [ngClass]="{ 'is-invalid': ErrorPassword }" [(ngModel)]="Password" type="password" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Password">
+    <input [ngClass]="{ 'is-invalid': ErrorPassword }" [(ngModel)]="ConfirmPassword" type="password" class="form-control mb-3 offset-md-3 col-md-6" style="text-align:center;" placeholder="Confirm Password">
     <button class="btn btn-lg btn-primary btn-block mb-3 offset-md-3 col-md-6" (click)="onSignUp()" >Sign up</button>
+    <div *ngIf="ErrorPassword || ErrorUsername" class="mb-3 offset-md-3 col-md-6 alert alert-danger" role="alert">
+      {{ErrorPassword ? ErrorPassword : ErrorUsername ? ErrorUsername : ''}}
+    </div>
     <p class="mt-5 mb-3 text-muted">© 2018</p>
   </div>
 
