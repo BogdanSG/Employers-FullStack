@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHandler} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -82,5 +82,22 @@ export class EmployeeService {
     }//catch
 
   }//employeeDelete
+
+  async employeeUpdate(data, token, url = `http://localhost:3000/api/employee-update?access_token=${token}`) {
+
+    try {
+
+      let result = await this.http.post(url, data).toPromise();
+      return result
+
+    }//try
+    catch (ex) {
+
+      console.log("Exception: employeeUpdate", ex);
+      return null;
+
+    }//catch
+
+  }//employeeUpdate
 
 }//EmployeeService

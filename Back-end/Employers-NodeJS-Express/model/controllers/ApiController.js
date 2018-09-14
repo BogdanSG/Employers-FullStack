@@ -283,5 +283,31 @@ module.exports = {
         }//catch
 
     },//employeeDelete
+    employeeUpdate: async function(req, res){
+
+        let response = new Response();
+
+        try {
+
+            //console.log(req.file);
+
+            response.code = 200;
+            response.message = 'Employee updated';
+            response.data = req.body;
+
+            res.json(response);
+
+        }//try
+        catch (Ex) {
+
+            response.code = 500;
+            response.message = Ex.message;
+            response.data = Ex;
+
+            res.json(response);
+
+        }//catch
+
+    },//employeeDelete
 
 };

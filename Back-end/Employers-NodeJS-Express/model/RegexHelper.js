@@ -14,7 +14,7 @@ class RegexHelper {
 
     static get EmployeeName(){
 
-        return /^\w[^0-9)([\]<>\\/.{},'":;`$~#@!%^&*+=|?_-]{1,255}$/gmi;
+        return /^[^0-9)([\]<>\\\/.{},'":;`$~#@!%^&*+=|?_-]{1,255}$/gmi;
 
     }//UserPassword
 

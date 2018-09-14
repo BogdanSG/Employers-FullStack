@@ -8,7 +8,7 @@ export class RegexHelperService {
 
   readonly UserName : RegExp = /^[a-z0-9_]{4,20}$/gmi;
   readonly UserPassword : RegExp = /^[a-z0-9]{4,20}$/gmi;
-  readonly EmployeeName : RegExp = /^\w[^0-9)([\]<>\\/.{},'":;`$~#@!%^&*+=|?_-]{1,255}$/gmi;
+  readonly EmployeeName : RegExp = /^[^0-9)([\]<>\\\/.{},'":;`$~#@!%^&*+=|?_-]{1,255}$/gmi;
 
   constructor() {
 
