@@ -23,6 +23,7 @@ import { SignInPageComponent } from './components/pages/sign-in-page/sign-in-pag
 import {AuthenticationService} from './services/authentication.service';
 import {FormsModule} from '@angular/forms';
 import {RegexHelperService} from './services/regex-helper.service';
+import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {RegexHelperService} from './services/regex-helper.service';
     SignInComponent,
     SignUpComponent,
     SignUpPageComponent,
-    SignInPageComponent
+    SignInPageComponent,
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,

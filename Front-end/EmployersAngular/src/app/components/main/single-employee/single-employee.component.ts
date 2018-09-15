@@ -31,6 +31,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
   readonly MaxSalaryValue : number = 1000000000;
   readonly MinSalaryValue : number = 1000;
+  readonly imgPath : string = 'http://localhost:3000/img/employees/';
 
   constructor(private ActivatedRoute: ActivatedRoute, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Router: Router, private RegexHelperService : RegexHelperService) {
 
@@ -222,12 +223,32 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
             let formData = new FormData();
 
-            formData.append('image', FileImput.files[0]);
+            if(FileImput.files.length > 0){
+
+              let file = FileImput.files[0];
+
+              if(file.size > 10485760){
+
+                this.ErrorMessage = 'Size image should not be exceed 10 mb';
+
+                return;
+
+              }//if
+
+              formData.append('image', file);
+
+            }//if
+            else {
+
+              formData.append('image', null);
+
+            }//else
+
             formData.append('EmployeeID', `${this.EmployeeID}`);
             formData.append('FirstName', this.Employee.FirstName);
             formData.append('LastName', this.Employee.LastName);
             formData.append('SurName', this.Employee.SurName !== '' ? this.Employee.SurName : null);
-            formData.append('ChiefID', this.Employee.ChiefID);
+            formData.append('ChiefID', this.Employee.Chief.EmployeeID);
             formData.append('EmploymentDate', this.Employee.EmploymentDate);
             formData.append('Salary', this.Employee.Salary);
 
@@ -237,7 +258,13 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
               this.SuccessMessage = data.message;
 
-              console.log(data.data);
+              let NewFileName = data.data.NewFileName;
+
+              if(NewFileName){
+
+                this.ImgPath = this.imgPath +  NewFileName + `?${new Date().getTime()}`;
+
+              }//if
 
             }//if
             else {
@@ -270,7 +297,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
         if(this.Employee.ImgName){
 
-          this.ImgPath = this.Employee.ImgName;
+          this.ImgPath = this.imgPath + this.Employee.ImgName;
 
         }//if
         else {
@@ -306,7 +333,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
       }//if
       else {
 
-        this.ErrorMessage = data.message;
+        this.Router.navigateByUrl('/404');
 
       }//else
 

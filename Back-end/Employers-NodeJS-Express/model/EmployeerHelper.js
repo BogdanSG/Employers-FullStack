@@ -86,10 +86,21 @@ async function deleteEmployee(EmployeeID){
 
         if(EmployeeID){
 
+            let EmployeeImgID = await getEmployeeImgIDByEmployeeID(EmployeeID);
+
             data = await connectionDB.query(`
                 DELETE FROM \`employees\` 
-                WHERE EmployeeID = ${EmployeeID}
+                WHERE \`EmployeeID\` = ${EmployeeID}
             `, { type: 'DELETE' });
+
+            if(EmployeeImgID){
+
+                await connectionDB.query(`
+                DELETE FROM \`employee_imgs\` 
+                WHERE \`EmployeeImgID\` = ${EmployeeImgID}
+            `, { type: 'DELETE' });
+
+            }//if
 
         }//if
 
@@ -228,17 +239,17 @@ async function getEmployeesIDsByChiefID(ChiefID){
 
 }//getEmployeesByChief
 
-async function getEmployeesIDsByPositionID(EmployeesID){
+async function getEmployeesIDsByPositionID(PositionID){
 
     try {
 
         let data = [];
 
-        if(EmployeesID){
+        if(PositionID){
 
             data = await connectionDB.query(`
                 SELECT e.EmployeeID FROM \`employees\` AS e
-                WHERE e.EmployeeID = ${EmployeesID}
+                WHERE e.PositionID = ${PositionID}
             `, { type: 'SELECT' });
 
             return data;
@@ -256,7 +267,7 @@ async function getEmployeesIDsByPositionID(EmployeesID){
 
 }//getEmployeesIDByPositionID
 
-async function getPositionIDsByEmployeeID(EmployeeID){
+async function getPositionIDByEmployeeID(EmployeeID){
 
     try {
 
@@ -264,7 +275,7 @@ async function getPositionIDsByEmployeeID(EmployeeID){
 
             let data = await connectionDB.query(`
                 SELECT e.PositionID FROM \`employees\` AS e
-                WHERE e.PositionID = ${PositionID}
+                WHERE e.EmployeeID = ${EmployeeID}
             `, { type: 'SELECT' });
 
             if(data.length > 0){
@@ -290,6 +301,120 @@ async function getPositionIDsByEmployeeID(EmployeeID){
     }//catch
 
 }//getEmployeesIDByPositionID
+
+async function getEmployeeImgIDByEmployeeID(EmployeeID) {
+
+    try {
+
+        let data = await connectionDB.query(`
+                SELECT e.EmployeeImgID FROM \`employees\` AS e
+                WHERE e.EmployeeID = ${EmployeeID} AND e.EmployeeImgID IS NOT NULL
+            `, { type: 'SELECT' });
+
+
+        if(data.length > 0){
+
+            return data[0].EmployeeImgID;
+
+        }//if
+        else {
+
+            return null;
+
+        }//else
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getEmployeeImgIDByEmployeeID
+
+async function getEmployeeImgNameByEmployeeID(EmployeeID) {
+
+    try {
+
+        let data = await connectionDB.query(`
+                SELECT ei.ImgName FROM \`employees\` AS e
+                JOIN \`employee_imgs\` AS ei ON e.EmployeeImgID = ei.EmployeeImgID
+                WHERE e.EmployeeID = ${EmployeeID} AND e.EmployeeImgID IS NOT NULL
+            `, { type: 'SELECT' });
+
+
+        if(data.length > 0){
+
+            return data[0].ImgName;
+
+        }//if
+        else {
+
+            return null;
+
+        }//else
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//getEmployeeImgNameByEmployeeID
+
+async function createOrUpdateImg(EmployeeID, ImgName){
+
+    try {
+
+        if(EmployeeID && ImgName){
+
+            let EmployeeImgID = await getEmployeeImgIDByEmployeeID(EmployeeID);
+
+            if(EmployeeImgID){
+
+                await connectionDB.query(`
+                UPDATE \`employee_imgs\` AS ei
+                SET ei.ImgName = '${ImgName}'
+                WHERE ei.EmployeeImgID = ${EmployeeImgID}
+            `, { type: 'UPDATE' });
+
+                return EmployeeImgID;
+
+            }//if
+            else {
+
+                let data = await connectionDB.query(`
+                INSERT INTO \`employee_imgs\` (\`EmployeeImgID\`, \`ImgName\`)
+                VALUES (NULL, '${ImgName}')
+            `, { type: 'INSERT' });
+
+                if(data && data[0]){
+
+                    await connectionDB.query(`
+                    UPDATE \`employees\`
+                    SET \`EmployeeImgID\` = ${data[0]}
+                    WHERE \`EmployeeID\` = ${EmployeeID}
+            `, { type: 'UPDATE' });
+
+                    return data[0];
+
+                }//if
+
+            }//else
+
+        }//if
+
+        return null;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//createOrUpdateImg
 
 async function updateChiefID(EmployeeID, ChiefID){
 
@@ -318,6 +443,44 @@ async function updateChiefID(EmployeeID, ChiefID){
 
 }//updateChiefID
 
+async function updateEmployee(EmployeeID, ChiefID, EmploymentDate, FirstName, LastName, SurName, Salary, PositionID, EmployeeImgID){
+
+    try {
+
+        if(EmployeeID && EmploymentDate && FirstName && LastName && Salary && PositionID){
+
+            let chiefID = ChiefID ? ChiefID : 'NULL';
+            let surName = SurName ? `'${SurName}'` : 'NULL';
+            let employeeImgID = EmployeeImgID ? EmployeeImgID : 'NULL';
+
+            let data = await connectionDB.query(`
+                UPDATE \`employees\` AS e
+                SET e.ChiefID = ${chiefID},
+                e.PositionID = ${PositionID},
+                e.EmployeeImgID = ${employeeImgID},
+                e.FirstName = '${FirstName}',
+                e.LastName = '${LastName}',
+                e.SurName = ${surName},
+                e.Salary = ${Salary},
+                e.EmploymentDate = '${EmploymentDate}'
+                WHERE e.EmployeeID = ${EmployeeID}
+            `, { type: 'UPDATE' });
+
+            return data;
+
+        }//if
+
+        return null;
+
+    }//try
+    catch (Ex) {
+
+        return { error: Ex };
+
+    }//catch
+
+}//updateEmployee
+
 module.exports = {
     getTreeEmployee: getTreeEmployee,
     getFullEmployee: getFullEmployee,
@@ -326,7 +489,11 @@ module.exports = {
     findUserByLogin: findUserByLogin,
     deleteEmployee: deleteEmployee,
     getEmployeesIDsByChiefID: getEmployeesIDsByChiefID,
-    getPositionIDsByEmployeeID: getPositionIDsByEmployeeID,
+    getPositionIDByEmployeeID: getPositionIDByEmployeeID,
     getEmployeesIDsByPositionID: getEmployeesIDsByPositionID,
+    getEmployeeImgIDByEmployeeID: getEmployeeImgIDByEmployeeID,
+    getEmployeeImgNameByEmployeeID: getEmployeeImgNameByEmployeeID,
     updateChiefID: updateChiefID,
+    updateEmployee: updateEmployee,
+    createOrUpdateImg: createOrUpdateImg,
 };

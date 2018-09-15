@@ -6,6 +6,7 @@ const config = require('../../config.json');
 const Response = require('../Response');
 const bcrypt = require('bcryptjs');
 const RegexHelper = require('../RegexHelper');
+const fs = require('fs');
 
 function getRandomInt(min, max) {
 
@@ -212,47 +213,17 @@ module.exports = {
 
             if(EmployeeID){
 
-                let Employees = await EmployeerHelper.getEmployeesIDsByChiefID(EmployeeID);
+                ChangeChief(res, response, EmployeeID);
 
-                let PositionID = await EmployeerHelper.getPositionIDsByEmployeeID(EmployeeID);
+                let ImageName = await EmployeerHelper.getEmployeeImgNameByEmployeeID(EmployeeID);
 
-                if(!PositionID){
+                if(ImageName){
 
-                    response.code = 500;
-                    response.message = 'Position Error';
-                    response.data = {};
-
-                    res.json(response);
-
-                    return;
+                    fs.unlinkSync(`./public/img/employees/${ImageName}`);
 
                 }//if
 
                 await EmployeerHelper.deleteEmployee(EmployeeID);
-
-                if(Employees.length > 0){
-
-                    let ChiefsIds = await EmployeerHelper.getEmployeesIDsByPositionID(PositionID);
-
-                    if(!ChiefsIds){
-
-                        response.code = 500;
-                        response.message = 'Cheifs Error, Employee deleted';
-                        response.data = {};
-
-                        res.json(response);
-
-                        return;
-
-                    }//if
-
-                    for(let i = 0; i < Employees.length; i ++){
-
-                        await EmployeerHelper.updateChiefID(Employees[i].EmployeeID, ChiefsIds[getRandomInt(0, ChiefsIds.length - 1)]);
-
-                    }//for
-
-                }//if
 
                 response.code = 200;
                 response.message = 'Employee deleted';
@@ -289,13 +260,137 @@ module.exports = {
 
         try {
 
-            //console.log(req.file);
+            let EmployeeID = req.body.EmployeeID;
+            let ChiefID = req.body.ChiefID !== 'undefined' ? req.body.ChiefID !== 'null' ? req.body.ChiefID : null : null;
+            let EmploymentDate = req.body.EmploymentDate;
+            let FirstName = req.body.FirstName;
+            let LastName = req.body.LastName;
+            let SurName = req.body.SurName;
+            let Salary = req.body.Salary;
+            let PositionID = 1;
+            let EmployeeImgID = null;
+            let NewFileName = null;
 
-            response.code = 200;
-            response.message = 'Employee updated';
-            response.data = req.body;
+            let file = req.file;
 
-            res.json(response);
+            if(file){
+
+                if(file.size > 10485760){
+
+                    fs.unlinkSync(file.path);
+
+                    response.code = 500;
+                    response.message = 'Size image should not be exceed 10 mb';
+                    response.data = {};
+
+                    res.json(response);
+
+                    return;
+
+                }//if
+
+            }//if
+
+            if(EmployeeID && EmploymentDate && FirstName && LastName && Salary){
+
+                EmployeeImgID = await EmployeerHelper.getEmployeeImgIDByEmployeeID(EmployeeID);
+
+                if(file){
+
+                    NewFileName = `${EmployeeID}${file.originalname.substr(file.originalname.lastIndexOf('.'))}`;
+
+                    EmployeeImgID = await EmployeerHelper.createOrUpdateImg(EmployeeID, NewFileName);
+
+                    if(EmployeeImgID){
+
+                        let newPath = `${file.destination}${NewFileName}`;
+
+                        let files = fs.readdirSync(file.destination);
+
+                        files.forEach(f => {
+
+                            if(f.slice(0, f.lastIndexOf('.')) == EmployeeID){
+
+                                fs.unlinkSync(`${file.destination}${f}`);
+
+                            }//if
+
+                        });
+
+                        fs.renameSync(file.path, newPath);
+
+                    }//if
+                    else {
+
+                        fs.unlinkSync(file.path);
+
+                    }//else
+
+                }//if
+
+                if(ChiefID){
+
+                    PositionID = await EmployeerHelper.getPositionIDByEmployeeID(ChiefID);
+
+                    if(PositionID){
+
+                        if(PositionID == 5){
+
+                            response.code = 500;
+                            response.message = 'Worker can not be Chief';
+                            response.data = {};
+
+                            res.json(response);
+
+                            return;
+
+                        }//if
+
+                        PositionID++;
+
+                    }//if
+                    else {
+
+                        response.code = 500;
+                        response.message = 'Position Error';
+                        response.data = {};
+
+                        res.json(response);
+
+                        return;
+
+                    }//else
+
+                }//if
+
+                let OldPositionID = await EmployeerHelper.getPositionIDByEmployeeID(EmployeeID);
+
+                if(OldPositionID != PositionID){
+
+                    ChangeChief(res, response, EmployeeID);
+
+                }//if
+
+                await EmployeerHelper.updateEmployee(EmployeeID, ChiefID, EmploymentDate, FirstName, LastName, SurName, Salary, PositionID, EmployeeImgID);
+
+                response.code = 200;
+                response.message = 'Employee updated';
+                response.data = {
+                    NewFileName: NewFileName
+                };
+
+                res.json(response);
+
+            }//if
+            else {
+
+                response.code = 500;
+                response.message = 'Incorrect data';
+                response.data = {};
+
+                res.json(response);
+
+            }//else
 
         }//try
         catch (Ex) {
@@ -308,6 +403,58 @@ module.exports = {
 
         }//catch
 
-    },//employeeDelete
+    },//employeeUpdate
 
 };
+
+async function ChangeChief(res, response, EmployeeID) {
+
+    let Employees = await EmployeerHelper.getEmployeesIDsByChiefID(EmployeeID);
+
+    let PositionID = await EmployeerHelper.getPositionIDByEmployeeID(EmployeeID);
+
+    if(!PositionID){
+
+        response.code = 500;
+        response.message = 'Position Error';
+        response.data = {};
+
+        res.json(response);
+
+        return;
+
+    }//if
+
+    if(Employees.length > 0){
+
+        let ChiefsIds = await EmployeerHelper.getEmployeesIDsByPositionID(PositionID);
+
+        if(!ChiefsIds && ChiefsIds.length === 0){
+
+            response.code = 500;
+            response.message = 'Cheifs Error, command executed';
+            response.data = {};
+
+            res.json(response);
+
+            return;
+
+        }//if
+
+        let RandomChief;
+
+        for(let i = 0; i < Employees.length; i ++){
+
+            do{
+
+                RandomChief = ChiefsIds[getRandomInt(0, ChiefsIds.length - 1)].EmployeeID;
+
+            } while (EmployeeID === RandomChief);
+
+            await EmployeerHelper.updateChiefID(Employees[i].EmployeeID, RandomChief);
+
+        }//for
+
+    }//if
+
+}//ChangeChief
