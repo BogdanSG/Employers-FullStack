@@ -7,18 +7,7 @@ function jwt() {
 
     const secret = config.secret;
 
-    return expressJwt({ secret, isRevoked, getToken }).unless({
-        path: [
-            '/api/sign-in',
-            '/api/sign-up',
-            '/api/tree-employee',
-            '/api/full-employee',
-            '/api/positions',
-            /\/img/i,
-            /\/css/i,
-            /\/js/i,
-        ]
-    });
+    return expressJwt({ secret, isRevoked, getToken });
 
 }//jwt
 
