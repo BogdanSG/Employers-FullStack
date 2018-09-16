@@ -65,6 +65,26 @@ export class EmployeeService {
 
   }//getAllPositions
 
+  async getEmployeeList(data, token, url = `http://localhost:3000/api/employee-list?access_token=${token}`) {
+
+    try {
+
+      data.access_token = token;
+
+      let result = await this.http.post(url, data).toPromise();
+
+      return result
+
+    }//try
+    catch (ex) {
+
+      console.log("Exception: getEmployeeList", ex);
+      return null;
+
+    }//catch
+
+  }//getEmployeeList
+
   async employeeDelete(employeeID, token, url = `http://localhost:3000/api/employee-delete?access_token=${token}`) {
 
     try {

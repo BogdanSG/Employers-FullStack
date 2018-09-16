@@ -14,7 +14,9 @@ function jwt() {
             '/api/tree-employee',
             '/api/full-employee',
             '/api/positions',
-            /\/img\/employees/i,
+            /\/img/i,
+            /\/css/i,
+            /\/js/i,
         ]
     });
 

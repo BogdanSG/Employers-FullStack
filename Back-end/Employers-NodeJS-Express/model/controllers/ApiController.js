@@ -42,14 +42,16 @@ module.exports = {
 
         ApiHelper.ApiTemplate(req, res, function(responce) {
 
+            console.log(req.body);
+
             let offset = req.body.offset;
             let limit = req.body.limit;
             let orderBy = req.body.orderBy;
-            let firstName = req.body.firstName;
-            let lastName = req.body.lastName;
-            let surName = req.body.surName;
+            let sort = req.body.sort;
+            let search = req.body.search;
+            let searchValue = req.body.searchValue;
 
-            return EmployeerHelper.getEmployees(offset, limit, orderBy, firstName, lastName, surName);
+            return EmployeerHelper.getEmployees(offset, limit, orderBy, sort, search, searchValue);
 
         });
 

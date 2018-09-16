@@ -115,7 +115,7 @@ async function deleteEmployee(EmployeeID){
 
 }//deleteEmployee
 
-async function getEmployees(offset, limit, orderBy, firstName, lastName, surName){
+async function getEmployees(offset, limit, orderBy, sort, search, searchValue){
 
     try {
 
@@ -124,21 +124,30 @@ async function getEmployees(offset, limit, orderBy, firstName, lastName, surName
         let Offset = offset ? offset : 0;
         let Limit = limit ? limit : 0;
         let OrderBy = orderBy ? orderBy : 'EmployeeID';
-        let FirstName = firstName ? firstName : '%';
-        let LastName = lastName ? lastName : '%';
-        let SurName = surName ? surName : '%';
+        let Sort = sort ? sort : 'ASC';
+        let Search = search ? search : null;
+        let SearchValue = searchValue ? searchValue : '';
 
-        FirstName.trim();
-        LastName.trim();
-        SurName.trim();
+        let searchString = '';
+
+        if(Search === 'FirstName' || Search === 'LastName' || Search === 'SurName'){
+
+            searchString += `WHERE e.${Search} LIKE '${SearchValue}%'`
+
+        }//if
+        else if(Search){
+
+            searchString = `WHERE e.${Search} = '${SearchValue}'`;
+
+        }//else if
 
         data = await connectionDB.query(`
         SELECT e.EmployeeID, e.ChiefID, p.PositionID, p.Position, e.EmployeeImgID, e.FirstName, e.LastName, e.SurName, e.EmploymentDate, e.Salary, ei.ImgName
         FROM \`employees\` AS e
         JOIN \`positions\` AS p ON p.PositionID = e.PositionID
-        LEFT JOIN \`employee_imgs\` AS ei ON ei.EmployeeImgID = e.EmployeeImgID
-        WHERE e.FirstName LIKE '${FirstName}' AND e.LastName LIKE '${LastName}' AND e.SurName LIKE '${SurName}'
-        ORDER BY ${OrderBy} ASC
+        LEFT JOIN \`employee_imgs\` AS ei ON ei.EmployeeImgID = e.EmployeeImgID 
+        ${searchString}
+        ORDER BY ${OrderBy} ${Sort}
         LIMIT ${Limit} OFFSET ${Offset}
         `, { type: 'SELECT' });
 

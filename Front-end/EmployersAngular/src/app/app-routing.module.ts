@@ -16,6 +16,7 @@ const routes: Routes = [
     children: [
       { path: '404', component: NotFoundPageComponent },
       { path: 'home', component: HomePageComponent },
+      { path: '', component: HomePageComponent },
       { path: 'treeview', component: TreeviewPageComponent },
       { path: 'list', component: ListPageComponent },
       { path: 'single-employee/:id', component: SingleEmployeePageComponent },

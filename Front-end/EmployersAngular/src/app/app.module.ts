@@ -24,6 +24,7 @@ import {AuthenticationService} from './services/authentication.service';
 import {FormsModule} from '@angular/forms';
 import {RegexHelperService} from './services/regex-helper.service';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+import {PhotoHelperService} from './services/photo-helper.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
     HttpClientModule,
     TreeModule.forRoot()
   ],
-  providers: [EmployeeService, AuthenticationService, RegexHelperService],
+  providers: [EmployeeService, AuthenticationService, RegexHelperService, PhotoHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

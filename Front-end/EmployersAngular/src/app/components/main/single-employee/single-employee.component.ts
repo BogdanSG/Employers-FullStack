@@ -6,6 +6,7 @@ import {AuthenticationService} from '../../../services/authentication.service';
 import {IAuthorize} from '../../../interfaces/iauthorize';
 import {ListComponent} from '../list/list.component';
 import {RegexHelperService} from '../../../services/regex-helper.service';
+import {PhotoHelperService} from '../../../services/photo-helper.service';
 
 @Component({
   selector: 'app-single-employee',
@@ -31,9 +32,8 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
   readonly MaxSalaryValue : number = 1000000000;
   readonly MinSalaryValue : number = 1000;
-  readonly imgPath : string = 'http://localhost:3000/img/employees/';
 
-  constructor(private ActivatedRoute: ActivatedRoute, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Router: Router, private RegexHelperService : RegexHelperService) {
+  constructor(private ActivatedRoute: ActivatedRoute, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Router: Router, private RegexHelperService : RegexHelperService, private PhotoHelperService : PhotoHelperService) {
 
     this.OldEmployee = {};
 
@@ -262,7 +262,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
               if(NewFileName){
 
-                this.ImgPath = this.imgPath +  NewFileName + `?${new Date().getTime()}`;
+                this.ImgPath = this.PhotoHelperService.getPhotoPath(NewFileName + `?${new Date().getTime()}`);
 
               }//if
 
@@ -297,12 +297,12 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
         if(this.Employee.ImgName){
 
-          this.ImgPath = this.imgPath + this.Employee.ImgName;
+          this.ImgPath = this.PhotoHelperService.getPhotoPath(this.Employee.ImgName);
 
         }//if
         else {
 
-          this.ImgPath = '/assets/public/img/user.png';
+          this.ImgPath = this.PhotoHelperService.DefaultPhotoPath;
 
         }//else
 

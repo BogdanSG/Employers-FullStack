@@ -1,9 +1,65 @@
 <div *ngIf="isAuthorized">
-  <div *ngIf="employeeList.length > 0">
-    <table class="table table-hover table-bordered">
+  <div style="margin-left: 10px; margin-bottom: 70px;">
+    <div class="row">
+      <div class="col-md-12 order-md-1">
+        <h4 class="mb-3">Settings</h4>
+        <div>
+
+          <div class="row">
+            <div class="col-md-1 mb-3">
+              <label>Limit: </label>
+              <select class="form-control" (change)="onLimitChange($event)">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Order By</label>
+              <select class="form-control" (change)="onOrderByChange($event)">
+                <option *ngFor="let sort of SortArray">{{sort}}</option>
+              </select>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label>Sort</label>
+              <select class="form-control" (change)="onSortChange($event)">
+                <option>Asc</option>
+                <option>Desc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label>Serch By</label>
+              <select class="form-control" (change)="onSearchChange($event)">
+                <option *ngFor="let search of SearchArray">{{search}}</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Search</label>
+              <input [(ngModel)]="SearchValue" (keyup)="onSearchValueChange()" type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px">
+            <div class="col-md-2">
+              <button class="btn btn-primary btn-lg btn-block" (click)="onPrevClick()">Prev</button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary btn-lg btn-block" (click)="onNextClick()">Next</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <table *ngIf="employeeList.length > 0" class="table table-hover table-bordered">
       <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
+        <th scope="col">Photo</th>
         <th scope="col">FirstName</th>
         <th scope="col">LastName</th>
         <th scope="col">SurName</th>
@@ -14,28 +70,24 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let employee of employeeList">
+      <tr *ngFor="let employee of employeeList" (click)="onTableClick(employee.EmployeeID)">
         <th scope="row">{{employee.EmployeeID}}</th>
+        <td><img src="{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}" class="rounded mx-auto d-block" height="40"></td>
         <td>{{employee.FirstName}}</td>
         <td>{{employee.LastName}}</td>
         <td>{{employee.SurName}}</td>
         <td>{{employee.Position}}</td>
         <td>{{employee.ChiefID ? 'True' : 'False'}}</td>
         <td>{{employee.Salary}}</td>
-        <td>{{employee.EmploymentDate}}</td>
+        <td>{{getNormalDate(employee.EmploymentDate)}}</td>
       </tr>
       </tbody>
     </table>
   </div>
-  <div *ngIf="employeeList.length === 0">
-    <div style="text-align:  center; padding: 10% 10% 10% 30%;">
-      <p style="font-size: 70px; font-weight: 700; color: #a39e9e91;">Employee List Empty</p>
-    </div>
-  </div>
 </div>
 <div *ngIf="!isAuthorized">
-  <div style="text-align:  center; padding: 10% 10% 10% 30%;">
-    <p style="font-size: 70px; font-weight: 700; color: #a39e9e91;">This Page For Authorized Users</p>
+  <div class="centerContent">
+    <p class="bigText">This Page For Authorized Users</p>
   </div>
 </div>
 

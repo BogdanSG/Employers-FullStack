@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-bottom: 80px;">
       <div class="col-md-12 order-md-1">
         <h4 class="mb-3">Employee Info</h4>
         <div class="needs-validation">
@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div *ngIf="isAuthorized" class="row">
             <div class="col-md-8 mb-6">
               <label>Chief</label>
               <div style="background-color: #e9ecef;" class="form-control">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>
@@ -46,7 +46,7 @@
             </div>
           </div>
 
-          <div class="row" style="margin-top: 10px">
+          <div *ngIf="isAuthorized" class="row" style="margin-top: 10px">
             <div class="col-md-8 mb-6">
               <label>Employment Date</label>
               <input [disabled]="!Edit" type="datetime-local" [(ngModel)]="Employee.EmploymentDate" class="form-control" placeholder="">

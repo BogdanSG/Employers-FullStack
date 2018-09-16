@@ -25,6 +25,19 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
+.centerContent {
+
+  text-align: center;
+  padding: 10% 10% 10% 30%;
+
+}
+
+.bigText {
+  font-size: 70px;
+  font-weight: 700;
+  color: #a39e9e91;
+}
+
 .container {
   padding: 75px 0 0 0 ;
   margin-left: 20px;
