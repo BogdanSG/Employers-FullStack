@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {RegexHelperService} from '../../../services/regex-helper.service';
+import {Location} from '@angular/common';
+import {MainMarginService} from '../../../services/main-margin.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,13 +17,15 @@ export class SignUpComponent implements OnInit {
   ErrorPassword: string;
   ErrorUsername: string;
 
-  constructor(private AuthenticationService: AuthenticationService, private Router: Router, private RegexHelperService: RegexHelperService) {
+  constructor(private AuthenticationService: AuthenticationService, private Location: Location, private RegexHelperService: RegexHelperService, private MainMarginService : MainMarginService) {
 
     let user = this.AuthenticationService.isAuthorized();
 
+    this.MainMarginService.SetCenterMargin();
+
     if(user){
 
-      this.Router.navigateByUrl('/home');
+      this.Location.back();
 
     }//if
 
@@ -74,7 +77,7 @@ export class SignUpComponent implements OnInit {
         }//if
         else {
 
-          this.Router.navigateByUrl('');
+          this.Location.back();
 
         }//else
 

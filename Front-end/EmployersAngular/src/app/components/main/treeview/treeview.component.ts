@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ITreeOptions} from 'angular-tree-component';
 import {EmployeeService} from '../../../services/employee.service';
 import {Router} from '@angular/router';
+import {MainMarginService} from '../../../services/main-margin.service';
 
 @Component({
   selector: 'app-treeview',
@@ -15,7 +16,9 @@ export class TreeviewComponent implements OnInit {
     getChildren: this.getChildren.bind(this)
   };
 
-  constructor(private EmployeeService : EmployeeService, private Router : Router) {
+  constructor(private EmployeeService : EmployeeService, private Router : Router, private MainMarginService : MainMarginService) {
+
+    this.MainMarginService.SetZeroMargin();
 
     this.nodes.push({
       id: 0,

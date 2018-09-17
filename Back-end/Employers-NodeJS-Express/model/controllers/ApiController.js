@@ -38,6 +38,17 @@ module.exports = {
         });
 
     },//fullEmployee
+    shortEmployee: async function getShortEmployee(req, res) {
+
+        ApiHelper.ApiTemplate(req, res, function(responce) {
+
+            let EmployeeID = req.body.id;
+
+            return EmployeerHelper.getShortEmployee(EmployeeID);
+
+        });
+
+    },//shortEmployee
     employeeList: async function getFullEmployee(req, res) {
 
         ApiHelper.ApiTemplate(req, res, function(responce) {
@@ -331,6 +342,18 @@ module.exports = {
                 }//if
 
                 if(ChiefID){
+
+                    if(ChiefID === EmployeeID){
+
+                        response.code = 500;
+                        response.message = 'Employee can not be yourself chief';
+                        response.data = {};
+
+                        res.json(response);
+
+                        return;
+
+                    }//if
 
                     PositionID = await EmployeerHelper.getPositionIDByEmployeeID(ChiefID);
 

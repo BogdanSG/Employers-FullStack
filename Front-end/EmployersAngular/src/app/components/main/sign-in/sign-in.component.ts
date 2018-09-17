@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../services/authentication.service';
-import {Router} from '@angular/router';
 import { Location } from '@angular/common';
+import {MainMarginService} from '../../../services/main-margin.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,13 +14,15 @@ export class SignInComponent implements OnInit {
   Password: string;
   Error: string;
 
-  constructor(private AuthenticationService : AuthenticationService, private Router : Router, private Location: Location) {
+  constructor(private AuthenticationService : AuthenticationService, private Location: Location, private MainMarginService : MainMarginService) {
 
     let user = this.AuthenticationService.isAuthorized();
 
+    this.MainMarginService.SetCenterMargin();
+
     if(user){
 
-      this.Router.navigateByUrl('/home');
+      this.Location.back();
 
     }//if
 

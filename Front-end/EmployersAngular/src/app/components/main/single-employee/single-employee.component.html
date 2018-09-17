@@ -1,5 +1,5 @@
 <div *ngIf="Employee && Positions">
-  <div style="padding: 0; margin: 0 0 0 25%;">
+  <div class="center-margin">
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="{{ImgPath}}" alt="" width="420">
       <div *ngIf="Edit" class="custom-file col-lg-6 col-md-9">
@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-4 mb-3">
               <label>ChiefID</label>
-              <input [disabled]="!Edit" [ngClass]="{ 'is-invalid': ChifIDError }" (change)="onChiefChange()" [(ngModel)]="Employee.Chief.EmployeeID" type="number" min="1" class="form-control" placeholder="">
+              <input [disabled]="!Edit" [ngClass]="{ 'is-invalid': ChifIDError }" (keyup)="onChiefChange()" [(ngModel)]="Employee.Chief.EmployeeID" type="number" min="1" class="form-control" placeholder="">
             </div>
           </div>
 

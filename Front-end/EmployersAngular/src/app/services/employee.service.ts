@@ -29,11 +29,11 @@ export class EmployeeService {
 
   }//getTreeEmployee
 
-  async getFullEmployee(employeeID, url = 'http://localhost:3000/api/full-employee'){
+  async getFullEmployee(employeeID, token, url = `http://localhost:3000/api/full-employee?access_token=${token}`){
 
     try{
 
-      let result = await this.http.post(url, {id : employeeID}).toPromise();
+      let result = await this.http.post(url, {id : employeeID, access_token: token}).toPromise();
 
       return result
 
@@ -46,6 +46,24 @@ export class EmployeeService {
     }//catch
 
   }//getFullEmployee
+
+  async getShortEmployee(employeeID, url = 'http://localhost:3000/api/short-employee'){
+
+    try{
+
+      let result = await this.http.post(url, {id : employeeID}).toPromise();
+
+      return result
+
+    }//try
+    catch(ex){
+
+      console.log("Exception: getShortEmployee" , ex);
+      return null;
+
+    }//catch
+
+  }//getShortEmployee
 
   async getAllPositions(url = 'http://localhost:3000/api/positions'){
 

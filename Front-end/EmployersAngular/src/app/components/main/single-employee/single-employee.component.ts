@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeService} from '../../../services/employee.service';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {IAuthorize} from '../../../interfaces/iauthorize';
-import {ListComponent} from '../list/list.component';
 import {RegexHelperService} from '../../../services/regex-helper.service';
 import {PhotoHelperService} from '../../../services/photo-helper.service';
+import {Location} from '@angular/common';
+import {MainMarginService} from '../../../services/main-margin.service';
 
 @Component({
   selector: 'app-single-employee',
@@ -33,7 +33,9 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
   readonly MaxSalaryValue : number = 1000000000;
   readonly MinSalaryValue : number = 1000;
 
-  constructor(private ActivatedRoute: ActivatedRoute, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Router: Router, private RegexHelperService : RegexHelperService, private PhotoHelperService : PhotoHelperService) {
+  constructor(private ActivatedRoute: ActivatedRoute, private Router : Router, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Location: Location, private RegexHelperService : RegexHelperService, private PhotoHelperService : PhotoHelperService, private MainMarginService : MainMarginService) {
+
+    this.MainMarginService.SetCenterMargin();
 
     this.OldEmployee = {};
 
@@ -67,6 +69,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
   onSignIn(){
 
     this.isAuthorized = true;
+    this.getFullEmployee();
 
   }//onSignIn
 
@@ -74,6 +77,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
     this.isAuthorized = false;
     this.Edit = false;
+    this.getShortEmployee();
 
   }//onLogOut
 
@@ -123,32 +127,7 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
         if(data.code === 200){
 
-          this.SuccessMessage = data.message;
-
-          let seconds = 5;
-
-          this.SuccessMessage += `, Redirect to home page: ${seconds}`;
-
-          let interval = setInterval(() => {
-
-            seconds--;
-
-            if(seconds <= 0){
-
-              clearInterval(interval);
-
-              this.Router.navigateByUrl('/home');
-
-            }//if
-            else {
-
-              this.SuccessMessage = this.SuccessMessage.slice(0, this.SuccessMessage.length - 1);
-
-              this.SuccessMessage += `${seconds}`;
-
-            }//else
-
-          }, 1000);
+          this.Location.back();
 
         }//if
         else {
@@ -258,6 +237,9 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
               this.SuccessMessage = data.message;
 
+              this.OldEmployee = Object.assign({}, this.Employee);
+              this.OldEmployee.Chief = Object.assign({}, this.Employee.Chief);
+
               let NewFileName = data.data.NewFileName;
 
               if(NewFileName){
@@ -283,17 +265,15 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
   }//onUpdateClick
 
-  async ngOnInit() {
+  async getShortEmployee(){
 
     if(this.EmployeeID){
 
-      let data: any = await this.EmployeeService.getFullEmployee(this.EmployeeID);
+      let data: any = await this.EmployeeService.getShortEmployee(this.EmployeeID);
 
       if(data.code === 200){
 
         this.Employee = data.data[0];
-
-        this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace('Z', '');
 
         if(this.Employee.ImgName){
 
@@ -303,22 +283,6 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
         else {
 
           this.ImgPath = this.PhotoHelperService.DefaultPhotoPath;
-
-        }//else
-
-        if(this.Employee.Chief) {
-
-          this.Employee.Chief = this.Employee.Chief[0];
-
-        }//if
-        else {
-
-          this.Employee.Chief = {
-            EmployeeID: null,
-            FirstName: '',
-            LastName: '',
-            SurName: ''
-          };
 
         }//else
 
@@ -338,6 +302,84 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
       }//else
 
     }//if
+
+  }//getShortEmployee
+
+  async getFullEmployee(){
+
+    if(this.EmployeeID){
+
+      if(this.isAuthorized){
+
+        let data: any = await this.EmployeeService.getFullEmployee(this.EmployeeID, this.AuthenticationService.GetToken());
+
+        if(data.code === 200){
+
+          this.Employee = data.data[0];
+
+          this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace('Z', '');
+
+          if(this.Employee.ImgName){
+
+            this.ImgPath = this.PhotoHelperService.getPhotoPath(this.Employee.ImgName);
+
+          }//if
+          else {
+
+            this.ImgPath = this.PhotoHelperService.DefaultPhotoPath;
+
+          }//else
+
+          if(this.Employee.Chief) {
+
+            this.Employee.Chief = this.Employee.Chief[0];
+
+          }//if
+          else {
+
+            this.Employee.Chief = {
+              EmployeeID: null,
+              FirstName: '',
+              LastName: '',
+              SurName: ''
+            };
+
+          }//else
+
+          data = await this.EmployeeService.getAllPositions();
+
+          if(data.code === 200){
+
+            this.Positions = data.data;
+
+          }//if
+
+        }//if
+        else {
+
+          this.Router.navigateByUrl('/404');
+
+        }//else
+
+      }//if
+
+    }//if
+
+
+  }//getFullEmployee
+
+  ngOnInit() {
+
+    if(this.isAuthorized){
+
+      this.getFullEmployee();
+
+    }//if
+    else {
+
+      this.getShortEmployee();
+
+    }//else
 
   }//ngOnInit
 
@@ -369,62 +411,74 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
 
   async onChiefChange(){
 
-    let ChiefID = this.Employee.Chief.EmployeeID;
+    if(this.isAuthorized){
 
-    if(ChiefID){
+      let ChiefID = this.Employee.Chief.EmployeeID;
 
-      if(ChiefID < 0){
+      if(ChiefID){
 
-        this.Employee.Chief.EmployeeID = null;
+        if(ChiefID < 0){
 
-      }//if
-      else {
-
-        let data: any = await this.EmployeeService.getFullEmployee(ChiefID);
-
-        if(data.code === 200){
-
-          this.ChifIDError = false;
-          this.ErrorMessage = null;
-
-          let Chief = data.data[0];
-
-          this.Employee.Chief.FirstName = Chief.FirstName;
-          this.Employee.Chief.LastName = Chief.LastName;
-          this.Employee.Chief.SurName = Chief.SurName;
-
-          if(Chief.PositionID === 5){
-
-            this.Employee.PositionID = -1;
-            this.ErrorMessage = 'Worker can not be Chief';
-            this.ChifIDError = true;
-
-          }//if
-          else {
-
-            this.Employee.PositionID = Chief.PositionID + 1;
-
-          }//else
+          this.Employee.Chief.EmployeeID = null;
 
         }//if
         else {
 
-          this.ErrorMessage = data.message;
-          this.Employee.PositionID = -1;
-          this.ChifIDError = true;
+          let data: any = await this.EmployeeService.getFullEmployee(ChiefID, this.AuthenticationService.GetToken());
+
+          if(data.code === 200){
+
+            this.ChifIDError = false;
+            this.ErrorMessage = null;
+
+            let Chief = data.data[0];
+
+            this.Employee.Chief.FirstName = Chief.FirstName;
+            this.Employee.Chief.LastName = Chief.LastName;
+            this.Employee.Chief.SurName = Chief.SurName;
+
+            if(Chief.PositionID === 5){
+
+              this.Employee.PositionID = -1;
+              this.ErrorMessage = 'Worker can not be Chief';
+              this.ChifIDError = true;
+
+            }//if
+            else {
+
+              this.Employee.PositionID = Chief.PositionID + 1;
+
+            }//else
+
+          }//if
+          else {
+
+            this.ErrorMessage = data.message;
+            this.Employee.PositionID = -1;
+            this.ChifIDError = true;
+
+          }//else
 
         }//else
 
-      }//else
+      }//if
+      else {
+
+        this.Employee.PositionID = 1;
+
+        this.clearChief();
+
+      }//esle
 
     }//if
-    else {
 
-      this.Employee.PositionID = 1;
+    if(this.Employee.Chief.EmployeeID === this.EmployeeID){
 
-      this.clearChief();
+      this.ErrorMessage = 'Employee can not be yourself chief';
 
-    }//esle
+      return;
+
+    }//if
 
   }//onChiefChange
 

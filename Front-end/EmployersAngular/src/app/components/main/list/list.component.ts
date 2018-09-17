@@ -4,6 +4,7 @@ import {IAuthorize} from '../../../interfaces/iauthorize';
 import {EmployeeService} from '../../../services/employee.service';
 import {PhotoHelperService} from '../../../services/photo-helper.service';
 import {Router} from '@angular/router';
+import {MainMarginService} from '../../../services/main-margin.service';
 
 @Component({
   selector: 'app-list',
@@ -38,18 +39,20 @@ export class ListComponent implements OnInit, IAuthorize {
   Search: string = 'EmployeeID';
   SearchValue: string;
 
-  constructor(private AuthenticationService : AuthenticationService, private EmployeeService : EmployeeService, private PhotoHelperService : PhotoHelperService, private Router : Router) {
+  constructor(private AuthenticationService : AuthenticationService, private EmployeeService : EmployeeService, private PhotoHelperService : PhotoHelperService, private Router : Router, private MainMarginService : MainMarginService) {
 
     let user = this.AuthenticationService.isAuthorized();
 
     if(user){
 
       this.isAuthorized = true;
+      this.MainMarginService.SetZeroMargin();
 
     }//if
     else {
 
       this.isAuthorized = false;
+      this.MainMarginService.SetCenterMargin();
 
     }//else
 
@@ -66,8 +69,6 @@ export class ListComponent implements OnInit, IAuthorize {
       this.Router.navigateByUrl(`/single-employee/${EmployeeID}`)
 
     }//if
-
-    console.log(EmployeeID);
 
   }//onTableClick
 
@@ -90,9 +91,13 @@ export class ListComponent implements OnInit, IAuthorize {
 
   onNextClick(){
 
-    this.Offset += this.Limit;
+    if(this.employeeList.length > 0){
 
-    this.getEmployeeList();
+      this.Offset += this.Limit;
+
+      this.getEmployeeList();
+
+    }//if
 
   }//onNextClick
 
@@ -165,6 +170,8 @@ export class ListComponent implements OnInit, IAuthorize {
 
   onSearchValueChange(){
 
+    this.Offset = 0;
+
     this.getEmployeeList();
 
   }//onSearchValueChange
@@ -172,12 +179,14 @@ export class ListComponent implements OnInit, IAuthorize {
   onSignIn(){
 
     this.isAuthorized = true;
+    this.MainMarginService.SetZeroMargin();
 
   }//onSignIn
 
   onLogOut(){
 
     this.isAuthorized = false;
+    this.MainMarginService.SetCenterMargin();
 
   }//onLogOut
 

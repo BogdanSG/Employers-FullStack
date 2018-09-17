@@ -6,7 +6,7 @@ const jwt = require('../../model/JwtHelper');
 
 router.post('/tree-employee', ApiController.treeEmployee);
 
-router.post('/full-employee', ApiController.fullEmployee);
+router.post('/short-employee', ApiController.shortEmployee);
 
 router.post('/positions', ApiController.positions);
 
@@ -15,6 +15,8 @@ router.post('/sign-in', ApiController.signIn);
 router.post('/sign-up', ApiController.signUp);
 
 //For Authorized
+
+router.post('/full-employee', jwt(), ApiController.fullEmployee);
 
 router.post('/employee-list', jwt(), ApiController.employeeList);
 

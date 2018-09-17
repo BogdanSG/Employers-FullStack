@@ -70,7 +70,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let employee of employeeList" (click)="onTableClick(employee.EmployeeID)">
+      <tr style="cursor: pointer" *ngFor="let employee of employeeList" (click)="onTableClick(employee.EmployeeID)">
         <th scope="row">{{employee.EmployeeID}}</th>
         <td><img src="{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}" class="rounded mx-auto d-block" height="40"></td>
         <td>{{employee.FirstName}}</td>
@@ -86,8 +86,8 @@
   </div>
 </div>
 <div *ngIf="!isAuthorized">
-  <div class="centerContent">
-    <p class="bigText">This Page For Authorized Users</p>
+  <div class="center-content">
+    <p class="big-text">This Page For Authorized Users</p>
   </div>
 </div>
 

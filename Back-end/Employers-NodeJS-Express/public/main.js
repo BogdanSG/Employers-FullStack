@@ -190,12 +190,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./services/regex-helper.service */ "./src/app/services/regex-helper.service.ts");
 /* harmony import */ var _components_pages_not_found_page_not_found_page_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/pages/not-found-page/not-found-page.component */ "./src/app/components/pages/not-found-page/not-found-page.component.ts");
 /* harmony import */ var _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./services/photo-helper.service */ "./src/app/services/photo-helper.service.ts");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -252,7 +254,7 @@ var AppModule = /** @class */ (function () {
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_9__["HttpClientModule"],
                 angular_tree_component__WEBPACK_IMPORTED_MODULE_8__["TreeModule"].forRoot()
             ],
-            providers: [_services_employee_service__WEBPACK_IMPORTED_MODULE_14__["EmployeeService"], _services_authentication_service__WEBPACK_IMPORTED_MODULE_21__["AuthenticationService"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_23__["RegexHelperService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_25__["PhotoHelperService"]],
+            providers: [_services_employee_service__WEBPACK_IMPORTED_MODULE_14__["EmployeeService"], _services_authentication_service__WEBPACK_IMPORTED_MODULE_21__["AuthenticationService"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_23__["RegexHelperService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_25__["PhotoHelperService"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_26__["MainMarginService"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
         })
     ], AppModule);
@@ -436,7 +438,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"isAuthorized\">\n  <div style=\"margin-left: 10px; margin-bottom: 70px;\">\n    <div class=\"row\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Settings</h4>\n        <div>\n\n          <div class=\"row\">\n            <div class=\"col-md-1 mb-3\">\n              <label>Limit: </label>\n              <select class=\"form-control\" (change)=\"onLimitChange($event)\">\n                <option>10</option>\n                <option>25</option>\n                <option>50</option>\n                <option>100</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Order By</label>\n              <select class=\"form-control\" (change)=\"onOrderByChange($event)\">\n                <option *ngFor=\"let sort of SortArray\">{{sort}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-2 mb-3\">\n              <label>Sort</label>\n              <select class=\"form-control\" (change)=\"onSortChange($event)\">\n                <option>Asc</option>\n                <option>Desc</option>\n              </select>\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-3 mb-3\">\n              <label>Serch By</label>\n              <select class=\"form-control\" (change)=\"onSearchChange($event)\">\n                <option *ngFor=\"let search of SearchArray\">{{search}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Search</label>\n              <input [(ngModel)]=\"SearchValue\" (keyup)=\"onSearchValueChange()\" type=\"text\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\" style=\"margin-bottom: 10px\">\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onPrevClick()\">Prev</button>\n            </div>\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onNextClick()\">Next</button>\n            </div>\n          </div>\n\n        </div>\n      </div>\n    </div>\n    <table *ngIf=\"employeeList.length > 0\" class=\"table table-hover table-bordered\">\n      <thead class=\"thead-light\">\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Photo</th>\n        <th scope=\"col\">FirstName</th>\n        <th scope=\"col\">LastName</th>\n        <th scope=\"col\">SurName</th>\n        <th scope=\"col\">Position</th>\n        <th scope=\"col\">Has Chief</th>\n        <th scope=\"col\">Salary</th>\n        <th scope=\"col\">Employment Date</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let employee of employeeList\" (click)=\"onTableClick(employee.EmployeeID)\">\n        <th scope=\"row\">{{employee.EmployeeID}}</th>\n        <td><img src=\"{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}\" class=\"rounded mx-auto d-block\" height=\"40\"></td>\n        <td>{{employee.FirstName}}</td>\n        <td>{{employee.LastName}}</td>\n        <td>{{employee.SurName}}</td>\n        <td>{{employee.Position}}</td>\n        <td>{{employee.ChiefID ? 'True' : 'False'}}</td>\n        <td>{{employee.Salary}}</td>\n        <td>{{getNormalDate(employee.EmploymentDate)}}</td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n<div *ngIf=\"!isAuthorized\">\n  <div class=\"centerContent\">\n    <p class=\"bigText\">This Page For Authorized Users</p>\n  </div>\n</div>\n\n"
+module.exports = "<div *ngIf=\"isAuthorized\">\n  <div style=\"margin-left: 10px; margin-bottom: 70px;\">\n    <div class=\"row\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Settings</h4>\n        <div>\n\n          <div class=\"row\">\n            <div class=\"col-md-1 mb-3\">\n              <label>Limit: </label>\n              <select class=\"form-control\" (change)=\"onLimitChange($event)\">\n                <option>10</option>\n                <option>25</option>\n                <option>50</option>\n                <option>100</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Order By</label>\n              <select class=\"form-control\" (change)=\"onOrderByChange($event)\">\n                <option *ngFor=\"let sort of SortArray\">{{sort}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-2 mb-3\">\n              <label>Sort</label>\n              <select class=\"form-control\" (change)=\"onSortChange($event)\">\n                <option>Asc</option>\n                <option>Desc</option>\n              </select>\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-3 mb-3\">\n              <label>Serch By</label>\n              <select class=\"form-control\" (change)=\"onSearchChange($event)\">\n                <option *ngFor=\"let search of SearchArray\">{{search}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Search</label>\n              <input [(ngModel)]=\"SearchValue\" (keyup)=\"onSearchValueChange()\" type=\"text\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\" style=\"margin-bottom: 10px\">\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onPrevClick()\">Prev</button>\n            </div>\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onNextClick()\">Next</button>\n            </div>\n          </div>\n\n        </div>\n      </div>\n    </div>\n    <table *ngIf=\"employeeList.length > 0\" class=\"table table-hover table-bordered\">\n      <thead class=\"thead-light\">\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Photo</th>\n        <th scope=\"col\">FirstName</th>\n        <th scope=\"col\">LastName</th>\n        <th scope=\"col\">SurName</th>\n        <th scope=\"col\">Position</th>\n        <th scope=\"col\">Has Chief</th>\n        <th scope=\"col\">Salary</th>\n        <th scope=\"col\">Employment Date</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr style=\"cursor: pointer\" *ngFor=\"let employee of employeeList\" (click)=\"onTableClick(employee.EmployeeID)\">\n        <th scope=\"row\">{{employee.EmployeeID}}</th>\n        <td><img src=\"{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}\" class=\"rounded mx-auto d-block\" height=\"40\"></td>\n        <td>{{employee.FirstName}}</td>\n        <td>{{employee.LastName}}</td>\n        <td>{{employee.SurName}}</td>\n        <td>{{employee.Position}}</td>\n        <td>{{employee.ChiefID ? 'True' : 'False'}}</td>\n        <td>{{employee.Salary}}</td>\n        <td>{{getNormalDate(employee.EmploymentDate)}}</td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n<div *ngIf=\"!isAuthorized\">\n  <div class=\"center-content\">\n    <p class=\"big-text\">This Page For Authorized Users</p>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -455,6 +457,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_employee_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/employee.service */ "./src/app/services/employee.service.ts");
 /* harmony import */ var _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/photo-helper.service */ "./src/app/services/photo-helper.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -504,12 +507,14 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var ListComponent = /** @class */ (function () {
-    function ListComponent(AuthenticationService, EmployeeService, PhotoHelperService, Router) {
+    function ListComponent(AuthenticationService, EmployeeService, PhotoHelperService, Router, MainMarginService) {
         this.AuthenticationService = AuthenticationService;
         this.EmployeeService = EmployeeService;
         this.PhotoHelperService = PhotoHelperService;
         this.Router = Router;
+        this.MainMarginService = MainMarginService;
         this.employeeList = [];
         this.SearchArray = [
             'EmployeeID',
@@ -536,9 +541,11 @@ var ListComponent = /** @class */ (function () {
         var user = this.AuthenticationService.isAuthorized();
         if (user) {
             this.isAuthorized = true;
+            this.MainMarginService.SetZeroMargin();
         } //if
         else {
             this.isAuthorized = false;
+            this.MainMarginService.SetCenterMargin();
         } //else
         this.AuthenticationService.onSignIn('ListComponent', this.onSignIn.bind(this));
         this.AuthenticationService.onLogOut('ListComponent', this.onLogOut.bind(this));
@@ -547,7 +554,6 @@ var ListComponent = /** @class */ (function () {
         if (EmployeeID) {
             this.Router.navigateByUrl("/single-employee/" + EmployeeID);
         } //if
-        console.log(EmployeeID);
     }; //onTableClick
     ListComponent.prototype.onPrevClick = function () {
         this.Offset -= this.Limit;
@@ -559,8 +565,10 @@ var ListComponent = /** @class */ (function () {
         } //else
     }; //onPrevClick
     ListComponent.prototype.onNextClick = function () {
-        this.Offset += this.Limit;
-        this.getEmployeeList();
+        if (this.employeeList.length > 0) {
+            this.Offset += this.Limit;
+            this.getEmployeeList();
+        } //if
     }; //onNextClick
     ListComponent.prototype.onLimitChange = function (event) {
         var limit = event.srcElement.value;
@@ -598,13 +606,16 @@ var ListComponent = /** @class */ (function () {
         } //if
     }; //onOrderByChange
     ListComponent.prototype.onSearchValueChange = function () {
+        this.Offset = 0;
         this.getEmployeeList();
     }; //onSearchValueChange
     ListComponent.prototype.onSignIn = function () {
         this.isAuthorized = true;
+        this.MainMarginService.SetZeroMargin();
     }; //onSignIn
     ListComponent.prototype.onLogOut = function () {
         this.isAuthorized = false;
+        this.MainMarginService.SetCenterMargin();
     }; //onLogOut
     ListComponent.prototype.ngOnInit = function () {
         this.getEmployeeList();
@@ -664,7 +675,7 @@ var ListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./list.component.html */ "./src/app/components/main/list/list.component.html"),
             styles: [__webpack_require__(/*! ./list.component.css */ "./src/app/components/main/list/list.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_1__["AuthenticationService"], _services_employee_service__WEBPACK_IMPORTED_MODULE_2__["EmployeeService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_3__["PhotoHelperService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
+        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_1__["AuthenticationService"], _services_employee_service__WEBPACK_IMPORTED_MODULE_2__["EmployeeService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_3__["PhotoHelperService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_5__["MainMarginService"]])
     ], ListComponent);
     return ListComponent;
 }()); //ListComponent
@@ -691,7 +702,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding: 0; margin: 0 0 0 25%;\">\n\n  <div class=\"py-5 text-center\">\n    <img class=\"mb-4\" src=\"/img/user.png\" alt=\"\" width=\"100\" height=\"100\">\n    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign in</h1>\n    <input [ngClass]=\"{ 'is-invalid': Error }\" [(ngModel)]=\"Login\" type=\"text\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Login\" required=\"\" autofocus=\"\">\n    <input [ngClass]=\"{ 'is-invalid': Error }\" [(ngModel)]=\"Password\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Password\">\n    <button class=\"btn btn-lg btn-primary btn-block mb-3 offset-md-3 col-md-6\" (click)=\"onSingInCkick()\">Sign in</button>\n    <div *ngIf=\"Error\" class=\"mb-3 offset-md-3 col-md-6 alert alert-danger\" role=\"alert\">\n      {{Error}}\n    </div>\n    <p class=\"mt-5 mb-3 text-muted\">© 2018</p>\n  </div>\n\n</div>\n"
+module.exports = "<div style=\"margin: 0 auto\">\n\n  <div class=\"py-5 text-center\">\n    <img class=\"mb-4\" src=\"/img/user.png\" alt=\"\" width=\"100\" height=\"100\">\n    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign in</h1>\n    <input [ngClass]=\"{ 'is-invalid': Error }\" [(ngModel)]=\"Login\" type=\"text\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Login\" required=\"\" autofocus=\"\">\n    <input [ngClass]=\"{ 'is-invalid': Error }\" [(ngModel)]=\"Password\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Password\">\n    <button class=\"btn btn-lg btn-primary btn-block mb-3 offset-md-3 col-md-6\" (click)=\"onSingInCkick()\">Sign in</button>\n    <div *ngIf=\"Error\" class=\"mb-3 offset-md-3 col-md-6 alert alert-danger\" role=\"alert\">\n      {{Error}}\n    </div>\n    <p class=\"mt-5 mb-3 text-muted\">© 2018</p>\n  </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -707,8 +718,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SignInComponent", function() { return SignInComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/authentication.service */ "./src/app/services/authentication.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -758,13 +769,14 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var SignInComponent = /** @class */ (function () {
-    function SignInComponent(AuthenticationService, Router, Location) {
+    function SignInComponent(AuthenticationService, Location, MainMarginService) {
         this.AuthenticationService = AuthenticationService;
-        this.Router = Router;
         this.Location = Location;
+        this.MainMarginService = MainMarginService;
         var user = this.AuthenticationService.isAuthorized();
+        this.MainMarginService.SetCenterMargin();
         if (user) {
-            this.Router.navigateByUrl('/home');
+            this.Location.back();
         } //if
     } //constructor
     SignInComponent.prototype.ngOnInit = function () {
@@ -803,7 +815,7 @@ var SignInComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./sign-in.component.html */ "./src/app/components/main/sign-in/sign-in.component.html"),
             styles: [__webpack_require__(/*! ./sign-in.component.css */ "./src/app/components/main/sign-in/sign-in.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_1__["AuthenticationService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["Location"]])
+        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_1__["AuthenticationService"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["Location"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_3__["MainMarginService"]])
     ], SignInComponent);
     return SignInComponent;
 }()); //SignInComponent
@@ -830,7 +842,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"padding: 0; margin: 0 0 0 25%;\">\n\n  <div class=\"py-5 text-center\">\n    <img class=\"mb-4\" src=\"/img/user.png\" alt=\"\" width=\"100\" height=\"100\">\n    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign up</h1>\n    <input [ngClass]=\"{ 'is-invalid': ErrorUsername }\" [(ngModel)]=\"Login\" type=\"text\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Login\" required=\"\" autofocus=\"\">\n    <input [ngClass]=\"{ 'is-invalid': ErrorPassword }\" [(ngModel)]=\"Password\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Password\">\n    <input [ngClass]=\"{ 'is-invalid': ErrorPassword }\" [(ngModel)]=\"ConfirmPassword\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Confirm Password\">\n    <button class=\"btn btn-lg btn-primary btn-block mb-3 offset-md-3 col-md-6\" (click)=\"onSignUp()\" >Sign up</button>\n    <div *ngIf=\"ErrorPassword || ErrorUsername\" class=\"mb-3 offset-md-3 col-md-6 alert alert-danger\" role=\"alert\">\n      {{ErrorPassword ? ErrorPassword : ErrorUsername ? ErrorUsername : ''}}\n    </div>\n    <p class=\"mt-5 mb-3 text-muted\">© 2018</p>\n  </div>\n\n</div>\n"
+module.exports = "<div style=\"margin: 0 auto\">\n\n  <div class=\"py-5 text-center\">\n    <img class=\"mb-4\" src=\"/img/user.png\" alt=\"\" width=\"100\" height=\"100\">\n    <h1 class=\"h3 mb-3 font-weight-normal\">Please sign up</h1>\n    <input [ngClass]=\"{ 'is-invalid': ErrorUsername }\" [(ngModel)]=\"Login\" type=\"text\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Login\" required=\"\" autofocus=\"\">\n    <input [ngClass]=\"{ 'is-invalid': ErrorPassword }\" [(ngModel)]=\"Password\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Password\">\n    <input [ngClass]=\"{ 'is-invalid': ErrorPassword }\" [(ngModel)]=\"ConfirmPassword\" type=\"password\" class=\"form-control mb-3 offset-md-3 col-md-6\" style=\"text-align:center;\" placeholder=\"Confirm Password\">\n    <button class=\"btn btn-lg btn-primary btn-block mb-3 offset-md-3 col-md-6\" (click)=\"onSignUp()\" >Sign up</button>\n    <div *ngIf=\"ErrorPassword || ErrorUsername\" class=\"mb-3 offset-md-3 col-md-6 alert alert-danger\" role=\"alert\">\n      {{ErrorPassword ? ErrorPassword : ErrorUsername ? ErrorUsername : ''}}\n    </div>\n    <p class=\"mt-5 mb-3 text-muted\">© 2018</p>\n  </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -845,9 +857,10 @@ module.exports = "<div style=\"padding: 0; margin: 0 0 0 25%;\">\n\n  <div class
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SignUpComponent", function() { return SignUpComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/authentication.service */ "./src/app/services/authentication.service.ts");
-/* harmony import */ var _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/regex-helper.service */ "./src/app/services/regex-helper.service.ts");
+/* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/authentication.service */ "./src/app/services/authentication.service.ts");
+/* harmony import */ var _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/regex-helper.service */ "./src/app/services/regex-helper.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -896,14 +909,17 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var SignUpComponent = /** @class */ (function () {
-    function SignUpComponent(AuthenticationService, Router, RegexHelperService) {
+    function SignUpComponent(AuthenticationService, Location, RegexHelperService, MainMarginService) {
         this.AuthenticationService = AuthenticationService;
-        this.Router = Router;
+        this.Location = Location;
         this.RegexHelperService = RegexHelperService;
+        this.MainMarginService = MainMarginService;
         var user = this.AuthenticationService.isAuthorized();
+        this.MainMarginService.SetCenterMargin();
         if (user) {
-            this.Router.navigateByUrl('/home');
+            this.Location.back();
         } //if
     } //constructor
     SignUpComponent.prototype.ngOnInit = function () {
@@ -939,7 +955,7 @@ var SignUpComponent = /** @class */ (function () {
                                 this.ErrorUsername = data.error;
                             } //if
                             else {
-                                this.Router.navigateByUrl('');
+                                this.Location.back();
                             } //else
                         } //if
                         return [3 /*break*/, 3];
@@ -957,7 +973,7 @@ var SignUpComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./sign-up.component.html */ "./src/app/components/main/sign-up/sign-up.component.html"),
             styles: [__webpack_require__(/*! ./sign-up.component.css */ "./src/app/components/main/sign-up/sign-up.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_3__["RegexHelperService"]])
+        __metadata("design:paramtypes", [_services_authentication_service__WEBPACK_IMPORTED_MODULE_1__["AuthenticationService"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["Location"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_2__["RegexHelperService"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_4__["MainMarginService"]])
     ], SignUpComponent);
     return SignUpComponent;
 }()); //SignUpComponent
@@ -984,7 +1000,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"Employee && Positions\">\n  <div style=\"padding: 0; margin: 0 0 0 25%;\">\n    <div class=\"py-5 text-center\">\n      <img class=\"d-block mx-auto mb-4\" src=\"{{ImgPath}}\" alt=\"\" width=\"420\">\n      <div *ngIf=\"Edit\" class=\"custom-file col-lg-6 col-md-9\">\n        <input id=\"employeeImage\" type=\"file\" class=\"custom-file-input\" accept=\"image/x-png,image/gif,image/jpeg\">\n        <label class=\"custom-file-label\">Choose file</label>\n      </div>\n    </div>\n\n    <div class=\"row\" style=\"margin-bottom: 80px;\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Employee Info</h4>\n        <div class=\"needs-validation\">\n\n          <div class=\"row\">\n            <div class=\"col-md-4 mb-3\">\n              <label>First name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': FirstNameError }\" [(ngModel)]=\"Employee.FirstName\" type=\"text\" class=\"form-control\" placeholder=\"Ivan\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Last name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': LastNameError }\" [(ngModel)]=\"Employee.LastName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanov\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Sur name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': SurNameError }\" [(ngModel)]=\"Employee.SurName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanovich\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Chief</label>\n              <div style=\"background-color: #e9ecef;\" class=\"form-control\">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>ChiefID</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': ChifIDError }\" (change)=\"onChiefChange()\" [(ngModel)]=\"Employee.Chief.EmployeeID\" type=\"number\" min=\"1\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-12 mb-6\">\n              <label>Position</label>\n              <div style=\"background-color: #e9ecef; text-align: center;\" class=\"form-control\">{{getPosition(Employee.PositionID) ? getPosition(Employee.PositionID).Position : ''}}</div>\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Employment Date</label>\n              <input [disabled]=\"!Edit\" type=\"datetime-local\" [(ngModel)]=\"Employee.EmploymentDate\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Salary</label>\n              <input [disabled]=\"!Edit\" (change)=\"onSalaryChange($event)\" [(ngModel)]=\"Employee.Salary\" type=\"number\" min=\"{{MinSalaryValue}}\" max=\"{{MaxSalaryValue}}\" step=\"1000\" class=\"form-control\" placeholder=\"100000\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px; margin-bottom: 30px\">\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onEdit()\">Edit</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button [disabled]=\"!Edit\" class=\"btn btn-warning btn-lg btn-block\" (click)=\"onUpdateClick()\">Update</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-danger btn-lg btn-block\" (click)=\"onDelete()\">Delete</button>\n            </div>\n          </div>\n\n          <div *ngIf=\"SuccessMessage\" class=\"alert alert-success\" role=\"alert\">{{SuccessMessage}}</div>\n          <div *ngIf=\"ErrorMessage\" class=\"alert alert-danger\" role=\"alert\">{{ErrorMessage}}</div>\n\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div *ngIf=\"Employee && Positions\">\n  <div class=\"center-margin\">\n    <div class=\"py-5 text-center\">\n      <img class=\"d-block mx-auto mb-4\" src=\"{{ImgPath}}\" alt=\"\" width=\"420\">\n      <div *ngIf=\"Edit\" class=\"custom-file col-lg-6 col-md-9\">\n        <input id=\"employeeImage\" type=\"file\" class=\"custom-file-input\" accept=\"image/x-png,image/gif,image/jpeg\">\n        <label class=\"custom-file-label\">Choose file</label>\n      </div>\n    </div>\n\n    <div class=\"row\" style=\"margin-bottom: 80px;\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Employee Info</h4>\n        <div class=\"needs-validation\">\n\n          <div class=\"row\">\n            <div class=\"col-md-4 mb-3\">\n              <label>First name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': FirstNameError }\" [(ngModel)]=\"Employee.FirstName\" type=\"text\" class=\"form-control\" placeholder=\"Ivan\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Last name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': LastNameError }\" [(ngModel)]=\"Employee.LastName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanov\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Sur name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': SurNameError }\" [(ngModel)]=\"Employee.SurName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanovich\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Chief</label>\n              <div style=\"background-color: #e9ecef;\" class=\"form-control\">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>ChiefID</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': ChifIDError }\" (keyup)=\"onChiefChange()\" [(ngModel)]=\"Employee.Chief.EmployeeID\" type=\"number\" min=\"1\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-12 mb-6\">\n              <label>Position</label>\n              <div style=\"background-color: #e9ecef; text-align: center;\" class=\"form-control\">{{getPosition(Employee.PositionID) ? getPosition(Employee.PositionID).Position : ''}}</div>\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Employment Date</label>\n              <input [disabled]=\"!Edit\" type=\"datetime-local\" [(ngModel)]=\"Employee.EmploymentDate\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Salary</label>\n              <input [disabled]=\"!Edit\" (change)=\"onSalaryChange($event)\" [(ngModel)]=\"Employee.Salary\" type=\"number\" min=\"{{MinSalaryValue}}\" max=\"{{MaxSalaryValue}}\" step=\"1000\" class=\"form-control\" placeholder=\"100000\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px; margin-bottom: 30px\">\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onEdit()\">Edit</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button [disabled]=\"!Edit\" class=\"btn btn-warning btn-lg btn-block\" (click)=\"onUpdateClick()\">Update</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-danger btn-lg btn-block\" (click)=\"onDelete()\">Delete</button>\n            </div>\n          </div>\n\n          <div *ngIf=\"SuccessMessage\" class=\"alert alert-success\" role=\"alert\">{{SuccessMessage}}</div>\n          <div *ngIf=\"ErrorMessage\" class=\"alert alert-danger\" role=\"alert\">{{ErrorMessage}}</div>\n\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1004,6 +1020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_authentication_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/authentication.service */ "./src/app/services/authentication.service.ts");
 /* harmony import */ var _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/regex-helper.service */ "./src/app/services/regex-helper.service.ts");
 /* harmony import */ var _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../services/photo-helper.service */ "./src/app/services/photo-helper.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1054,16 +1072,21 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
+
 var SingleEmployeeComponent = /** @class */ (function () {
-    function SingleEmployeeComponent(ActivatedRoute, EmployeeService, AuthenticationService, Router, RegexHelperService, PhotoHelperService) {
+    function SingleEmployeeComponent(ActivatedRoute, Router, EmployeeService, AuthenticationService, Location, RegexHelperService, PhotoHelperService, MainMarginService) {
         this.ActivatedRoute = ActivatedRoute;
+        this.Router = Router;
         this.EmployeeService = EmployeeService;
         this.AuthenticationService = AuthenticationService;
-        this.Router = Router;
+        this.Location = Location;
         this.RegexHelperService = RegexHelperService;
         this.PhotoHelperService = PhotoHelperService;
+        this.MainMarginService = MainMarginService;
         this.MaxSalaryValue = 1000000000;
         this.MinSalaryValue = 1000;
+        this.MainMarginService.SetCenterMargin();
         this.OldEmployee = {};
         var id = +this.ActivatedRoute.snapshot.params['id'];
         if (id) {
@@ -1081,10 +1104,12 @@ var SingleEmployeeComponent = /** @class */ (function () {
     } //constructor
     SingleEmployeeComponent.prototype.onSignIn = function () {
         this.isAuthorized = true;
+        this.getFullEmployee();
     }; //onSignIn
     SingleEmployeeComponent.prototype.onLogOut = function () {
         this.isAuthorized = false;
         this.Edit = false;
+        this.getShortEmployee();
     }; //onLogOut
     SingleEmployeeComponent.prototype.onEdit = function () {
         this.ErrorMessage = null;
@@ -1108,8 +1133,7 @@ var SingleEmployeeComponent = /** @class */ (function () {
     }; //onEdit
     SingleEmployeeComponent.prototype.onDelete = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            var result, data, seconds_1, interval_1;
+            var result, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1120,20 +1144,7 @@ var SingleEmployeeComponent = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         if (data.code === 200) {
-                            this.SuccessMessage = data.message;
-                            seconds_1 = 5;
-                            this.SuccessMessage += ", Redirect to home page: " + seconds_1;
-                            interval_1 = setInterval(function () {
-                                seconds_1--;
-                                if (seconds_1 <= 0) {
-                                    clearInterval(interval_1);
-                                    _this.Router.navigateByUrl('/home');
-                                } //if
-                                else {
-                                    _this.SuccessMessage = _this.SuccessMessage.slice(0, _this.SuccessMessage.length - 1);
-                                    _this.SuccessMessage += "" + seconds_1;
-                                } //else
-                            }, 1000);
+                            this.Location.back();
                         } //if
                         else {
                             this.ErrorMessage = data.message;
@@ -1205,6 +1216,8 @@ var SingleEmployeeComponent = /** @class */ (function () {
                         data = _a.sent();
                         if (data.code === 200) {
                             this.SuccessMessage = data.message;
+                            this.OldEmployee = Object.assign({}, this.Employee);
+                            this.OldEmployee.Chief = Object.assign({}, this.Employee.Chief);
                             NewFileName = data.data.NewFileName;
                             if (NewFileName) {
                                 this.ImgPath = this.PhotoHelperService.getPhotoPath(NewFileName + ("?" + new Date().getTime()));
@@ -1219,14 +1232,48 @@ var SingleEmployeeComponent = /** @class */ (function () {
             });
         });
     }; //onUpdateClick
-    SingleEmployeeComponent.prototype.ngOnInit = function () {
+    SingleEmployeeComponent.prototype.getShortEmployee = function () {
         return __awaiter(this, void 0, void 0, function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!this.EmployeeID) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.EmployeeService.getFullEmployee(this.EmployeeID)];
+                        return [4 /*yield*/, this.EmployeeService.getShortEmployee(this.EmployeeID)];
+                    case 1:
+                        data = _a.sent();
+                        if (!(data.code === 200)) return [3 /*break*/, 3];
+                        this.Employee = data.data[0];
+                        if (this.Employee.ImgName) {
+                            this.ImgPath = this.PhotoHelperService.getPhotoPath(this.Employee.ImgName);
+                        } //if
+                        else {
+                            this.ImgPath = this.PhotoHelperService.DefaultPhotoPath;
+                        } //else
+                        return [4 /*yield*/, this.EmployeeService.getAllPositions()];
+                    case 2:
+                        data = _a.sent();
+                        if (data.code === 200) {
+                            this.Positions = data.data;
+                        } //if
+                        return [3 /*break*/, 4];
+                    case 3:
+                        this.Router.navigateByUrl('/404');
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    }; //getShortEmployee
+    SingleEmployeeComponent.prototype.getFullEmployee = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.EmployeeID) return [3 /*break*/, 4];
+                        if (!this.isAuthorized) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.EmployeeService.getFullEmployee(this.EmployeeID, this.AuthenticationService.GetToken())];
                     case 1:
                         data = _a.sent();
                         if (!(data.code === 200)) return [3 /*break*/, 3];
@@ -1263,6 +1310,14 @@ var SingleEmployeeComponent = /** @class */ (function () {
                 }
             });
         });
+    }; //getFullEmployee
+    SingleEmployeeComponent.prototype.ngOnInit = function () {
+        if (this.isAuthorized) {
+            this.getFullEmployee();
+        } //if
+        else {
+            this.getShortEmployee();
+        } //else
     }; //ngOnInit
     SingleEmployeeComponent.prototype.getPosition = function (PositionID) {
         if (this.Positions && PositionID) {
@@ -1284,12 +1339,13 @@ var SingleEmployeeComponent = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!this.isAuthorized) return [3 /*break*/, 5];
                         ChiefID = this.Employee.Chief.EmployeeID;
                         if (!ChiefID) return [3 /*break*/, 4];
                         if (!(ChiefID < 0)) return [3 /*break*/, 1];
                         this.Employee.Chief.EmployeeID = null;
                         return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, this.EmployeeService.getFullEmployee(ChiefID)];
+                    case 1: return [4 /*yield*/, this.EmployeeService.getFullEmployee(ChiefID, this.AuthenticationService.GetToken())];
                     case 2:
                         data = _a.sent();
                         if (data.code === 200) {
@@ -1319,7 +1375,12 @@ var SingleEmployeeComponent = /** @class */ (function () {
                         this.Employee.PositionID = 1;
                         this.clearChief();
                         _a.label = 5;
-                    case 5: return [2 /*return*/];
+                    case 5:
+                        if (this.Employee.Chief.EmployeeID === this.EmployeeID) {
+                            this.ErrorMessage = 'Employee can not be yourself chief';
+                            return [2 /*return*/];
+                        } //if
+                        return [2 /*return*/];
                 }
             });
         });
@@ -1351,7 +1412,7 @@ var SingleEmployeeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./single-employee.component.html */ "./src/app/components/main/single-employee/single-employee.component.html"),
             styles: [__webpack_require__(/*! ./single-employee.component.css */ "./src/app/components/main/single-employee/single-employee.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _services_employee_service__WEBPACK_IMPORTED_MODULE_2__["EmployeeService"], _services_authentication_service__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_4__["RegexHelperService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_5__["PhotoHelperService"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_employee_service__WEBPACK_IMPORTED_MODULE_2__["EmployeeService"], _services_authentication_service__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["Location"], _services_regex_helper_service__WEBPACK_IMPORTED_MODULE_4__["RegexHelperService"], _services_photo_helper_service__WEBPACK_IMPORTED_MODULE_5__["PhotoHelperService"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_7__["MainMarginService"]])
     ], SingleEmployeeComponent);
     return SingleEmployeeComponent;
 }()); //SingleEmployeeComponent
@@ -1395,6 +1456,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _services_employee_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/employee.service */ "./src/app/services/employee.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1442,14 +1504,17 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var TreeviewComponent = /** @class */ (function () {
-    function TreeviewComponent(EmployeeService, Router) {
+    function TreeviewComponent(EmployeeService, Router, MainMarginService) {
         this.EmployeeService = EmployeeService;
         this.Router = Router;
+        this.MainMarginService = MainMarginService;
         this.nodes = [];
         this.options = {
             getChildren: this.getChildren.bind(this)
         };
+        this.MainMarginService.SetZeroMargin();
         this.nodes.push({
             id: 0,
             name: 'Employees',
@@ -1499,7 +1564,7 @@ var TreeviewComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./treeview.component.html */ "./src/app/components/main/treeview/treeview.component.html"),
             styles: [__webpack_require__(/*! ./treeview.component.css */ "./src/app/components/main/treeview/treeview.component.css")]
         }),
-        __metadata("design:paramtypes", [_services_employee_service__WEBPACK_IMPORTED_MODULE_1__["EmployeeService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
+        __metadata("design:paramtypes", [_services_employee_service__WEBPACK_IMPORTED_MODULE_1__["EmployeeService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _services_main_margin_service__WEBPACK_IMPORTED_MODULE_3__["MainMarginService"]])
     ], TreeviewComponent);
     return TreeviewComponent;
 }()); //TreeviewComponent
@@ -1526,7 +1591,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"centerContent\">\n  <p class=\"bigText\">Welcome To Employee Application</p>\n</div>\n"
+module.exports = "<div class=\"center-content center-margin\">\n  <p class=\"big-text\">Welcome To Employee Application</p>\n</div>\n"
 
 /***/ }),
 
@@ -1541,6 +1606,7 @@ module.exports = "<div class=\"centerContent\">\n  <p class=\"bigText\">Welcome 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePageComponent", function() { return HomePageComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_main_margin_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../services/main-margin.service */ "./src/app/services/main-margin.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1551,8 +1617,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var HomePageComponent = /** @class */ (function () {
-    function HomePageComponent() {
+    function HomePageComponent(MainMarginService) {
+        this.MainMarginService = MainMarginService;
+        this.MainMarginService.SetCenterMargin();
     } //constructor
     HomePageComponent.prototype.ngOnInit = function () {
     }; //OnInit
@@ -1562,7 +1631,7 @@ var HomePageComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./home-page.component.html */ "./src/app/components/pages/home-page/home-page.component.html"),
             styles: [__webpack_require__(/*! ./home-page.component.css */ "./src/app/components/pages/home-page/home-page.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_main_margin_service__WEBPACK_IMPORTED_MODULE_1__["MainMarginService"]])
     ], HomePageComponent);
     return HomePageComponent;
 }()); //HomePageComponent
@@ -1652,7 +1721,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n  <app-header></app-header>\n\n  <main role=\"main\" class=\"container\">\n\n    <router-outlet></router-outlet>\n\n  </main>\n\n  <app-footer FooterTitle=\"Employee Application\"></app-footer>\n\n</div>\n"
+module.exports = "<div>\n\n  <app-header></app-header>\n\n  <main id=\"main\" role=\"main\" class=\"container\">\n\n    <router-outlet></router-outlet>\n\n  </main>\n\n  <app-footer FooterTitle=\"Employee Application\"></app-footer>\n\n</div>\n"
 
 /***/ }),
 
@@ -1715,7 +1784,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"centerContent\">\n  <p class=\"bigText\" style=\"color: #6c6c6c;\">Error 404</p>\n  <p class=\"bigText\">Page Not Found</p>\n</div>\n\n"
+module.exports = "<div class=\"center-content\">\n  <p class=\"big-text\" style=\"color: #6c6c6c;\">Error 404</p>\n  <p class=\"big-text\">Page Not Found</p>\n</div>\n\n"
 
 /***/ }),
 
@@ -2255,15 +2324,15 @@ var EmployeeService = /** @class */ (function () {
             });
         });
     }; //getTreeEmployee
-    EmployeeService.prototype.getFullEmployee = function (employeeID, url) {
-        if (url === void 0) { url = '/api/full-employee'; }
+    EmployeeService.prototype.getFullEmployee = function (employeeID, token, url) {
+        if (url === void 0) { url = "/api/full-employee?access_token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
             var result, ex_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.http.post(url, { id: employeeID }).toPromise()];
+                        return [4 /*yield*/, this.http.post(url, { id: employeeID, access_token: token }).toPromise()];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result];
@@ -2276,10 +2345,31 @@ var EmployeeService = /** @class */ (function () {
             });
         });
     }; //getFullEmployee
+    EmployeeService.prototype.getShortEmployee = function (employeeID, url) {
+        if (url === void 0) { url = '/api/short-employee'; }
+        return __awaiter(this, void 0, void 0, function () {
+            var result, ex_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.http.post(url, { id: employeeID }).toPromise()];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                    case 2:
+                        ex_3 = _a.sent();
+                        console.log("Exception: getShortEmployee", ex_3);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    }; //getShortEmployee
     EmployeeService.prototype.getAllPositions = function (url) {
         if (url === void 0) { url = '/api/positions'; }
         return __awaiter(this, void 0, void 0, function () {
-            var result, ex_3;
+            var result, ex_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2289,8 +2379,8 @@ var EmployeeService = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
-                        ex_3 = _a.sent();
-                        console.log("Exception: getAllPositions", ex_3);
+                        ex_4 = _a.sent();
+                        console.log("Exception: getAllPositions", ex_4);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2300,7 +2390,7 @@ var EmployeeService = /** @class */ (function () {
     EmployeeService.prototype.getEmployeeList = function (data, token, url) {
         if (url === void 0) { url = "/api/employee-list?access_token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
-            var result, ex_4;
+            var result, ex_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2311,8 +2401,8 @@ var EmployeeService = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
-                        ex_4 = _a.sent();
-                        console.log("Exception: getEmployeeList", ex_4);
+                        ex_5 = _a.sent();
+                        console.log("Exception: getEmployeeList", ex_5);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2322,7 +2412,7 @@ var EmployeeService = /** @class */ (function () {
     EmployeeService.prototype.employeeDelete = function (employeeID, token, url) {
         if (url === void 0) { url = "/api/employee-delete?access_token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
-            var result, ex_5;
+            var result, ex_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2332,8 +2422,8 @@ var EmployeeService = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
-                        ex_5 = _a.sent();
-                        console.log("Exception: employeeDelete", ex_5);
+                        ex_6 = _a.sent();
+                        console.log("Exception: employeeDelete", ex_6);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2343,7 +2433,7 @@ var EmployeeService = /** @class */ (function () {
     EmployeeService.prototype.employeeUpdate = function (data, token, url) {
         if (url === void 0) { url = "/api/employee-update?access_token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
-            var result, ex_6;
+            var result, ex_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2353,8 +2443,8 @@ var EmployeeService = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
-                        ex_6 = _a.sent();
-                        console.log("Exception: employeeUpdate", ex_6);
+                        ex_7 = _a.sent();
+                        console.log("Exception: employeeUpdate", ex_7);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2369,6 +2459,55 @@ var EmployeeService = /** @class */ (function () {
     ], EmployeeService);
     return EmployeeService;
 }()); //EmployeeService
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/main-margin.service.ts":
+/*!*************************************************!*\
+  !*** ./src/app/services/main-margin.service.ts ***!
+  \*************************************************/
+/*! exports provided: MainMarginService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MainMarginService", function() { return MainMarginService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MainMarginService = /** @class */ (function () {
+    function MainMarginService() {
+    } //constructor
+    MainMarginService.prototype.SetZeroMargin = function () {
+        var main = document.querySelector('#main');
+        if (main) {
+            main.style.margin = '0';
+        } //if
+    }; //SetZeroMargin
+    MainMarginService.prototype.SetCenterMargin = function () {
+        var main = document.querySelector('#main');
+        if (main) {
+            main.style.margin = '0 auto';
+        } //if
+    }; //SetCenterMargin
+    MainMarginService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], MainMarginService);
+    return MainMarginService;
+}()); //MainMarginService
 
 
 

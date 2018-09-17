@@ -78,6 +78,35 @@ async function getFullEmployee(EmployeeID){
 
 }//getFullEmployee
 
+async function getShortEmployee(EmployeeID) {
+
+    try {
+
+        let data = [];
+
+        if(EmployeeID){
+
+            data = await connectionDB.query(`
+                SELECT e.EmployeeID, p.Position, p.PositionID, ei.ImgName, e.FirstName, e.LastName, e.SurName
+                FROM \`employees\` AS e
+                JOIN \`positions\` AS p ON p.PositionID = e.PositionID
+                LEFT JOIN \`employee_imgs\` AS ei ON ei.EmployeeImgID = e.EmployeeImgID
+                WHERE e.EmployeeID = '${EmployeeID}'
+            `, { type: 'SELECT' });
+
+        }//if
+
+        return data;
+
+    }//try
+    catch (Ex) {
+
+        throw Ex;
+
+    }//catch
+
+}//getShortEmployee
+
 async function deleteEmployee(EmployeeID){
 
     try {
@@ -493,6 +522,7 @@ async function updateEmployee(EmployeeID, ChiefID, EmploymentDate, FirstName, La
 module.exports = {
     getTreeEmployee: getTreeEmployee,
     getFullEmployee: getFullEmployee,
+    getShortEmployee: getShortEmployee,
     getEmployees: getEmployees,
     getAllPositions: getAllPositions,
     findUserByLogin: findUserByLogin,
