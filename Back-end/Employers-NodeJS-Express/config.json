@@ -1,3 +1,7 @@
 {
-  "secret": "sjdhfjkshkjfh238748sdjhfjksdry927yuisdf23"
+  "secret": "sjdhfjkshkjfh238748sdjhfjksdry927yuisdf23",
+  "host": "localhost",
+  "database": "employers",
+  "username": "root",
+  "password": ""
 }
