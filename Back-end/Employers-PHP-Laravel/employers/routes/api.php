@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Helpers\EmployeerHelper;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,16 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/test', function (){
+
+    $data = EmployeerHelper::getShortEmployee(7777);
+
+    dump($data);
+
+});
+
+///
 
 Route::post('/tree-employee', 'Api\ApiController@treeEmployee');
 

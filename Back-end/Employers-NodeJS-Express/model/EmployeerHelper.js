@@ -161,7 +161,7 @@ async function getEmployees(offset, limit, orderBy, sort, search, searchValue){
 
         if(Search === 'FirstName' || Search === 'LastName' || Search === 'SurName'){
 
-            searchString += `WHERE e.${Search} LIKE '${SearchValue}%'`
+            searchString += `WHERE e.${Search} LIKE '${SearchValue}%'`;
 
         }//if
         else if(Search){
@@ -213,7 +213,7 @@ async function getAllPositions() {
 
 }//getTreeEmployee
 
-async function findUserByLogin(login) {
+async function findUserByLogin(Login) {
 
     try {
 
@@ -374,23 +374,29 @@ async function getEmployeeImgNameByEmployeeID(EmployeeID) {
 
     try {
 
-        let data = await connectionDB.query(`
-                SELECT ei.ImgName FROM \`employees\` AS e
-                JOIN \`employee_imgs\` AS ei ON e.EmployeeImgID = ei.EmployeeImgID
-                WHERE e.EmployeeID = ${EmployeeID} AND e.EmployeeImgID IS NOT NULL
-            `, { type: 'SELECT' });
+        if(EmployeeID){
+
+            let data = await connectionDB.query(`
+            SELECT ei.ImgName FROM \`employees\` AS e
+            JOIN \`employee_imgs\` AS ei ON e.EmployeeImgID = ei.EmployeeImgID
+            WHERE e.EmployeeID = ${EmployeeID} AND e.EmployeeImgID IS NOT NULL
+        `, { type: 'SELECT' });
 
 
-        if(data.length > 0){
+            if(data.length > 0){
 
-            return data[0].ImgName;
+                return data[0].ImgName;
+
+            }//if
+            else {
+
+                return null;
+
+            }//else
 
         }//if
-        else {
 
-            return null;
-
-        }//else
+        return null;
 
     }//try
     catch (Ex) {
