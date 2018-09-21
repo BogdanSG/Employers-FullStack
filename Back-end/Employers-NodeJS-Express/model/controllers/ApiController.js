@@ -1,11 +1,11 @@
-const ApiHelper = require('../ApiHelper');
-const EmployeerHelper = require('../EmployeerHelper');
+const ApiHelper = require('../helpers/ApiHelper');
+const EmployeerHelper = require('../helpers/EmployeerHelper');
 const User = require('../../database/model/User');
 const jwt = require('jsonwebtoken');
 const config = require('../../config.json');
-const Response = require('../Response');
+const Response = require('../classes/Response');
 const bcrypt = require('bcryptjs');
-const RegexHelper = require('../RegexHelper');
+const RegexHelper = require('../helpers/RegexHelper');
 const fs = require('fs');
 
 function getRandomInt(min, max) {

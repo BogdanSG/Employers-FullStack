@@ -1,7 +1,7 @@
 const expressJwt = require('express-jwt');
 //const User = require('../database/model/User');
 const findUserByLogin = require('./EmployeerHelper').findUserByLogin;
-const config = require('../config.json');
+const config = require('../../config.json');
 
 function jwt() {
 

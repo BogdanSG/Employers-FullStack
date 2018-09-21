@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ApiController = require('../../model/controllers/ApiController');
 let upload = require('multer')({dest: './public/img/employees/'});
-const jwt = require('../../model/JwtHelper');
+const jwt = require('../../model/helpers/JwtHelper');
 
 router.post('/tree-employee', ApiController.treeEmployee);
 

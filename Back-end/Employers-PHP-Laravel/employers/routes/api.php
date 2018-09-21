@@ -14,16 +14,6 @@ use App\Http\Helpers\EmployeerHelper;
 |
 */
 
-Route::get('/test', function (){
-
-    $data = EmployeerHelper::getShortEmployee(7777);
-
-    dump($data);
-
-});
-
-///
-
 Route::post('/tree-employee', 'Api\ApiController@treeEmployee');
 
 Route::post('/short-employee', 'Api\ApiController@shortEmployee');

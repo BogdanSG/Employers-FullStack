@@ -7,7 +7,7 @@ use \Exception;
 
 class ApiHelper {
 
-    public static function ApiTemplate($callback) {
+    public static function ApiTemplate($arguments, $callback) {
 
         $responce = new Response();
 
@@ -17,11 +17,11 @@ class ApiHelper {
 
             if($callback && is_callable($callback)){
 
-                $data = $callback($responce);
+                $data = $callback($arguments, $responce);
 
             }//if
 
-            if($data->length > 0){
+            if(count($data) > 0){
 
                 $responce->code = 200;
                 $responce->message = 'OK';

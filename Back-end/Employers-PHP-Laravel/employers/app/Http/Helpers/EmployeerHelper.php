@@ -4,10 +4,11 @@
 namespace App\Http\Helpers;
 use \Exception;
 use \DB;
+use function MongoDB\BSON\toJSON;
 
 class EmployeerHelper {
 
-    public static function getTreeEmployee($EmployeeID) {
+    public static function getTreeEmployee($EmployeeID = null) {
 
         try {
 
@@ -16,7 +17,7 @@ class EmployeerHelper {
             if($EmployeeID){
 
                 $data = DB::select('
-                SELECT e.EmployeeID, e.FirstName, e.LastName, e.SurName, p.PositionID, p.Position, (SELECT COUNT(*) FROM \`employees\` AS ee WHERE ee.ChiefID = e.EmployeeID) as CountEmployees
+                SELECT e.EmployeeID, e.FirstName, e.LastName, e.SurName, p.PositionID, p.Position, (SELECT COUNT(*) FROM `employees` AS ee WHERE ee.ChiefID = e.EmployeeID) as CountEmployees
                 FROM `employees` AS e
                 JOIN `positions` AS p ON p.PositionID = e.PositionID
                 WHERE e.ChiefID = :EmployeeID
@@ -26,7 +27,7 @@ class EmployeerHelper {
             else {
 
                 $data = DB::select('
-                SELECT e.EmployeeID, e.FirstName, e.LastName, e.SurName, p.PositionID, p.Position, (SELECT COUNT(*) FROM \`employees\` AS ee WHERE ee.ChiefID = e.EmployeeID) as CountEmployees
+                SELECT e.EmployeeID, e.FirstName, e.LastName, e.SurName, p.PositionID, p.Position, (SELECT COUNT(*) FROM `employees` AS ee WHERE ee.ChiefID = e.EmployeeID) as CountEmployees
                 FROM `employees` AS e
                 JOIN `positions` AS p ON p.PositionID = e.PositionID
                 WHERE e.PositionID = 1
@@ -61,7 +62,7 @@ class EmployeerHelper {
                 WHERE e.EmployeeID = :EmployeeID
             ', [ 'EmployeeID' => $EmployeeID ]);
 
-                if($data->length > 0 && $data[0]->Chief){
+                if(count($data) > 0 && $data[0]->Chief){
 
                     $data[0]->Chief = DB::select('
                 SELECT e.EmployeeID, p.Position, e.FirstName, e.LastName, e.SurName
@@ -183,9 +184,9 @@ class EmployeerHelper {
         JOIN `positions` AS p ON p.PositionID = e.PositionID
         LEFT JOIN `employee_imgs` AS ei ON ei.EmployeeImgID = e.EmployeeImgID
         ${searchString}
-        ORDER BY :OrderBy :Sort
-        LIMIT :Limit OFFSET :Offset
-        ", ['OrderBy' => $OrderBy, 'Sort' => $Sort, 'Limit' => $Limit, 'Offset' => $Offset]);
+        ORDER BY ${OrderBy} ${Sort}
+        LIMIT ${Limit} OFFSET ${Offset}
+        ");
 
             return $data;
 
@@ -232,7 +233,7 @@ class EmployeerHelper {
                 WHERE u.Login = :Login
             ', ['Login' => $Login]);
 
-                if($data->length > 0){
+                if(count($data) > 0){
 
                     return $data[0];
 
@@ -324,7 +325,7 @@ class EmployeerHelper {
                 WHERE e.EmployeeID = :EmployeeID
             ', ['EmployeeID' => $EmployeeID]);
 
-                if($data->length > 0){
+                if(count($data) > 0){
 
                     return $data[0]->PositionID;
 
@@ -358,7 +359,7 @@ class EmployeerHelper {
             ', ['EmployeeID' => $EmployeeID]);
 
 
-            if($data->length > 0){
+            if(count($data) > 0){
 
                 return $data[0]->EmployeeImgID;
 
@@ -385,13 +386,13 @@ class EmployeerHelper {
             if($EmployeeID){
 
                 $data = DB::select('
-                SELECT ei.ImgName FROM \`employees\` AS e
-                JOIN \`employee_imgs\` AS ei ON e.EmployeeImgID = ei.EmployeeImgID
+                SELECT ei.ImgName FROM `employees` AS e
+                JOIN `employee_imgs` AS ei ON e.EmployeeImgID = ei.EmployeeImgID
                 WHERE e.EmployeeID = ${EmployeeID} AND e.EmployeeImgID IS NOT NULL
             ', ['EmployeeID' => $EmployeeID]);
 
 
-                if($data->length > 0){
+                if(count($data) > 0){
 
                     return $data[0]->ImgName;
 
@@ -438,7 +439,7 @@ class EmployeerHelper {
                 else {
 
                     $data = DB::statement("
-                INSERT INTO `employee_imgs\` (`EmployeeImgID\`, `ImgName\`)
+                INSERT INTO `employee_imgs` (`EmployeeImgID`, `ImgName`)
                 VALUES (NULL, '${ImgName}')
                 ");
 

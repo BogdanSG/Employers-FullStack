@@ -1,4 +1,4 @@
-const Response = require('../model/Response');
+const Response = require('../classes/Response');
 
 async function ApiTemplate(req, res, callback){
 

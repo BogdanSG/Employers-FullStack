@@ -1,4 +1,4 @@
-const connectionDB = require('../database/connectionDB');
+const connectionDB = require('../../database/connectionDB');
 
 async function getTreeEmployee(EmployeeID) {
 
