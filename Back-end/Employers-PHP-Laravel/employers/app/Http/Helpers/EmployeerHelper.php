@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Http\Helpers;
 use \Exception;
 use \DB;
-use function MongoDB\BSON\toJSON;
 
 class EmployeerHelper {
 
@@ -221,17 +219,17 @@ class EmployeerHelper {
 
     }//getAllPositions
 
-    public static function findUserByLogin($Login){
+    public static function findUserByUserName($UserName){
 
         try {
 
-            if($Login){
+            if($UserName){
 
                 $data = DB::select('
                 SELECT *
                 FROM `users` AS u
-                WHERE u.Login = :Login
-            ', ['Login' => $Login]);
+                WHERE u.username = :UserName
+            ', ['UserName' => $UserName]);
 
                 if(count($data) > 0){
 
@@ -255,7 +253,7 @@ class EmployeerHelper {
 
         }//catch
 
-    }//findUserByLogin
+    }//findUserByUserName
 
     public static function getEmployeesIDsByChiefID($ChiefID){
 
@@ -279,7 +277,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -308,7 +306,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -343,7 +341,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -373,7 +371,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -411,7 +409,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -464,7 +462,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -491,7 +489,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 
@@ -529,7 +527,7 @@ class EmployeerHelper {
         }//try
         catch (Exception $ex) {
 
-            return ['error' => $ex];
+            return $ex;
 
         }//catch
 

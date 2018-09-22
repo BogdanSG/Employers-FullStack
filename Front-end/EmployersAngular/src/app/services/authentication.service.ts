@@ -19,7 +19,7 @@ export class AuthenticationService {
 
   isAuthorized(){
 
-    if(localStorage.getItem('currentUser') && localStorage.getItem('access_token')){
+    if(localStorage.getItem('currentUser') && localStorage.getItem('token')){
 
       let user: any = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -36,9 +36,9 @@ export class AuthenticationService {
 
   GetToken(){
 
-    if(localStorage.getItem('access_token')){
+    if(localStorage.getItem('token')){
 
-      return JSON.parse(localStorage.getItem('access_token'));
+      return JSON.parse(localStorage.getItem('token'));
 
     }//if
 
@@ -87,7 +87,7 @@ export class AuthenticationService {
     if(result.code === 200 && result.data.token){
 
       localStorage.setItem('currentUser', JSON.stringify(result.data.user));
-      localStorage.setItem('access_token', JSON.stringify(result.data.token));
+      localStorage.setItem('token', JSON.stringify(result.data.token));
 
       this.onSignInCallBacks.forEach(callbaks => {
 
@@ -109,7 +109,7 @@ export class AuthenticationService {
   logOut(){
 
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('token');
 
     this.onlogOutCallBacks.forEach(callbaks => {
 

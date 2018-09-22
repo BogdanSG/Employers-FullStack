@@ -1,6 +1,5 @@
 const expressJwt = require('express-jwt');
-//const User = require('../database/model/User');
-const findUserByLogin = require('./EmployeerHelper').findUserByLogin;
+const User = require('../database/model/User');
 const config = require('../../config.json');
 
 function jwt() {
@@ -13,8 +12,7 @@ function jwt() {
 
 async function isRevoked(req, payload, done) {
 
-    //const user = await User.findById(payload.UserID);
-    const user = await findUserByLogin(payload.UserID);
+    const user = await User.findById(payload.UserID);
 
     if (!user) {
 
@@ -28,7 +26,7 @@ async function isRevoked(req, payload, done) {
 
 function getToken (req) {
 
-    let token = req.query.access_token || req.body.access_token || req.cookies.access_token || req.headers['x-access-token'];
+    let token = req.query.token || req.body.token || req.cookies.token || req.headers['x-token'];
 
     if (token) {
 

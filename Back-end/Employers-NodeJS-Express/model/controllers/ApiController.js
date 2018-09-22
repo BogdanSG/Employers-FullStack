@@ -88,18 +88,18 @@ module.exports = {
 
                 let user = await User.findOne({
                     where: {
-                        Login: userData.username
+                        username: userData.username
                     }
                 });
 
-                if (user && bcrypt.compareSync(userData.password, user.Password)) {
+                if (user && bcrypt.compareSync(userData.password, user.password)) {
 
-                    const token = jwt.sign({ UserID: user.UserID }, config.secret);
+                    const token = jwt.sign({ id: user.id }, config.secret);
 
                     response.code = 200;
                     response.message = 'OK';
                     response.data = {
-                        user: user.Login,
+                        user: user.username,
                         token: token
                     };
 
@@ -138,34 +138,34 @@ module.exports = {
 
             let userData = { username: req.body.username, password: req.body.password };
 
-            if(!RegexHelper.IsMatch(userData.username, RegexHelper.UserName)){
-
-                response.code = 500;
-                response.message = 'Invalid UserName';
-                response.data = {};
-
-                res.json(response);
-
-                return;
-
-            }//if
-            else if(!RegexHelper.IsMatch(userData.password, RegexHelper.UserPassword)){
-
-                response.code = 500;
-                response.message = 'Invalid Password';
-                response.data = {};
-
-                res.json(response);
-
-                return;
-
-            }//else if
-
             if(userData.username && userData.password){
+
+                if(!RegexHelper.IsMatch(userData.username, RegexHelper.UserName)){
+
+                    response.code = 500;
+                    response.message = 'Invalid UserName';
+                    response.data = {};
+    
+                    res.json(response);
+    
+                    return;
+    
+                }//if
+                else if(!RegexHelper.IsMatch(userData.password, RegexHelper.UserPassword)){
+    
+                    response.code = 500;
+                    response.message = 'Invalid Password';
+                    response.data = {};
+    
+                    res.json(response);
+    
+                    return;
+    
+                }//else if
 
                 let user = await User.findOne({
                     where: {
-                        Login: userData.username
+                        username: userData.username
                     }
                 });
 
@@ -174,11 +174,11 @@ module.exports = {
                     userData.password = bcrypt.hashSync(userData.password, 10);
 
                     user = await User.create({
-                        Login: userData.username,
-                        Password: userData.password
+                        username: userData.username,
+                        password: userData.password
                     });
 
-                    const token = jwt.sign({ UserID: user.UserID }, config.secret);
+                    const token = jwt.sign({ id: user.id }, config.secret);
 
                     response.code = 200;
                     response.message = 'OK';
@@ -198,7 +198,7 @@ module.exports = {
 
                     res.json(response);
 
-                }//esle
+                }//else
 
             }//if
 

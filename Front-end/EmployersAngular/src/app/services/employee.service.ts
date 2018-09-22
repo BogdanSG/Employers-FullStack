@@ -29,11 +29,11 @@ export class EmployeeService {
 
   }//getTreeEmployee
 
-  async getFullEmployee(employeeID, token, url = `http://localhost:3000/api/full-employee?access_token=${token}`){
+  async getFullEmployee(employeeID, token, url = `http://localhost:3000/api/full-employee?token=${token}`){
 
     try{
 
-      let result = await this.http.post(url, {id : employeeID, access_token: token}).toPromise();
+      let result = await this.http.post(url, {id : employeeID, token: token}).toPromise();
 
       return result
 
@@ -83,11 +83,11 @@ export class EmployeeService {
 
   }//getAllPositions
 
-  async getEmployeeList(data, token, url = `http://localhost:3000/api/employee-list?access_token=${token}`) {
+  async getEmployeeList(data, token, url = `http://localhost:3000/api/employee-list?token=${token}`) {
 
     try {
 
-      data.access_token = token;
+      data.token = token;
 
       let result = await this.http.post(url, data).toPromise();
 
@@ -103,11 +103,11 @@ export class EmployeeService {
 
   }//getEmployeeList
 
-  async employeeDelete(employeeID, token, url = `http://localhost:3000/api/employee-delete?access_token=${token}`) {
+  async employeeDelete(employeeID, token, url = `http://localhost:3000/api/employee-delete?token=${token}`) {
 
     try {
 
-      let result = await this.http.post(url, {id: employeeID, access_token: token}).toPromise();
+      let result = await this.http.post(url, {id: employeeID, token: token}).toPromise();
 
       return result
 
@@ -121,7 +121,7 @@ export class EmployeeService {
 
   }//employeeDelete
 
-  async employeeUpdate(data, token, url = `http://localhost:3000/api/employee-update?access_token=${token}`) {
+  async employeeUpdate(data, token, url = `http://localhost:3000/api/employee-update?token=${token}`) {
 
     try {
 

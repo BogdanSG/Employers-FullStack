@@ -213,16 +213,16 @@ async function getAllPositions() {
 
 }//getTreeEmployee
 
-async function findUserByLogin(Login) {
+async function findUserByUserName(UserName) {
 
     try {
 
-        if(Login){
+        if(UserName){
 
             let data = await connectionDB.query(`
                 SELECT *
                 FROM \`users\` AS u
-                WHERE u.Login = '${Login}'
+                WHERE u.username = '${UserName}'
             `, { type: 'SELECT' });
 
             if(data.length > 0){
@@ -247,7 +247,7 @@ async function findUserByLogin(Login) {
 
     }//catch
 
-}//getTreeEmployee
+}//findUserByUserName
 
 async function getEmployeesIDsByChiefID(ChiefID){
 
@@ -531,7 +531,7 @@ module.exports = {
     getShortEmployee: getShortEmployee,
     getEmployees: getEmployees,
     getAllPositions: getAllPositions,
-    findUserByLogin: findUserByLogin,
+    findUserByUserName: findUserByUserName,
     deleteEmployee: deleteEmployee,
     getEmployeesIDsByChiefID: getEmployeesIDsByChiefID,
     getPositionIDByEmployeeID: getPositionIDByEmployeeID,

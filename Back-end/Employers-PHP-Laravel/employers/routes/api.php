@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Http\Helpers\EmployeerHelper;
+use \Tymon\JWTAuth\Facades\JWTAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +25,14 @@ Route::post('/sign-up', 'Api\ApiController@signUp');
 
 //For Authorized
 
-Route::post('/full-employee', 'Api\ApiController@fullEmployee');
+Route::group(['middleware' => ['jwt.auth']], function() {
 
-Route::post('/employee-list', 'Api\ApiController@employeeList');
+    Route::post('/full-employee', 'Api\ApiController@fullEmployee');
 
-Route::post('/employee-delete', 'Api\ApiController@employeeDelete');
+    Route::post('/employee-list', 'Api\ApiController@employeeList');
 
-Route::post('/employee-update', 'Api\ApiController@employeeUpdate');
+    Route::post('/employee-delete', 'Api\ApiController@employeeDelete');
+
+    Route::post('/employee-update', 'Api\ApiController@employeeUpdate');
+
+});

@@ -4,18 +4,18 @@ const connection = require('../connectionDB');
 
 const User = connection.define('user', {
 
-    UserID: {
+    id: {
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
     },
-    Login: {
+    username: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
 
     },
-    Password: {
+    password: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     }
@@ -24,7 +24,7 @@ const User = connection.define('user', {
     indexes: [
         {
             unique: true,
-            fields: ['Login']
+            fields: ['username']
         }
     ],
     createdAt: false,
