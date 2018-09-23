@@ -10,3 +10,5 @@ EmployeeImg.sync({force: true});
 Employee.sync({force: true});
 
 User.sync({force: true});
+
+console.log('Complete!');

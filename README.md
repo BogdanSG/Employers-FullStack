@@ -14,8 +14,8 @@ PHP: .env
   
 Import DataBase employers.sql or generate new data NodeJS Only :  
 Create DataBase 'employers'  
-npm restart  
-npm insert  
+npm run restart  
+npm run insert  
   
 # Run  
   

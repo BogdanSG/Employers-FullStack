@@ -78,23 +78,23 @@ const surNameArr = [
     let countWorker = Math.round(countEmployeers * 0.449); //44.9%
 
     await Position.create({
-        Title: 'Director'
+        Position: 'Director'
     });
 
     await Position.create({
-        Title: 'Chief'
+        Position: 'Chief'
     });
 
     await Position.create({
-        Title: 'Main Worker'
+        Position: 'Main Worker'
     });
 
     await Position.create({
-        Title: 'Foreman'
+        Position: 'Foreman'
     });
 
     await Position.create({
-        Title: 'Worker'
+        Position: 'Worker'
     });
 
     let TempIDS = 1;
@@ -169,6 +169,7 @@ const surNameArr = [
 
     }//for
 
+    console.log('Complete!');
 
 })();
 
