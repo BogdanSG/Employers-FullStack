@@ -13,6 +13,6 @@
 
 Route::get('{path?}', function() {
 
-    return 'SinglePage';
+    return view('index');
 
 })->where("path", ".+");

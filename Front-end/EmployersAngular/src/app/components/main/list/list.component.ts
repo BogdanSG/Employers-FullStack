@@ -20,7 +20,6 @@ export class ListComponent implements OnInit, IAuthorize {
     'FirstName',
     'LastName',
     'SurName',
-    'FullName',
     'Salary',
   ];
   SortArray : Array<string> = [

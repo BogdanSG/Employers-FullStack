@@ -216,8 +216,6 @@ module.exports = {
     },//signIn
     employeeDelete: async function(req, res){
 
-        let EmployeeID = req.body.id;
-
         let response = new Response();
 
         try {
@@ -305,6 +303,40 @@ module.exports = {
             }//if
 
             if(EmployeeID && EmploymentDate && FirstName && LastName && Salary){
+
+                if(!RegexHelper.IsMatch(FirstName, RegexHelper.EmployeeName)){
+
+                    response.code = 500;
+                    response.message = 'Incorrect FirstName';
+                    response.data = {};
+
+                    res.json(response);
+
+                    return;
+
+                }//if
+                else if(!RegexHelper.IsMatch(LastName, RegexHelper.EmployeeName)){
+
+                    response.code = 500;
+                    response.message = 'Incorrect LastName';
+                    response.data = {};
+
+                    res.json(response);
+
+                    return;
+
+                }//else if
+                else if(SurName && !RegexHelper.IsMatch(SurName, RegexHelper.EmployeeName)){
+
+                    response.code = 500;
+                    response.message = 'Incorrect SurName';
+                    response.data = {};
+
+                    res.json(response);
+
+                    return;
+
+                }//else if
 
                 EmployeeImgID = await EmployeerHelper.getEmployeeImgIDByEmployeeID(EmployeeID);
 

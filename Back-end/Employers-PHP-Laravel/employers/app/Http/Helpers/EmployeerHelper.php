@@ -167,7 +167,7 @@ class EmployeerHelper {
 
             if($Search === 'FirstName' || $Search === 'LastName' || $Search === 'SurName'){
 
-                $searchString += "WHERE e.${Search} LIKE '${SearchValue}%'";
+                $searchString = "WHERE e.${Search} LIKE '${SearchValue}%'";
 
             }//if
             else if($Search){
@@ -265,8 +265,8 @@ class EmployeerHelper {
 
                 $data = DB::select('
                 SELECT e.EmployeeID FROM `employees` AS e
-                WHERE e.ChiefID = ${ChiefID}
-            ');
+                WHERE e.ChiefID = :ChiefID
+            ', ['ChiefID' => $ChiefID]);
 
                 return $data;
 
@@ -436,20 +436,17 @@ class EmployeerHelper {
                 }//if
                 else {
 
-                    $data = DB::statement("
-                INSERT INTO `employee_imgs` (`EmployeeImgID`, `ImgName`)
-                VALUES (NULL, '${ImgName}')
-                ");
+                    $EmployeeImgID = DB::table('employee_imgs')->insertGetId(['ImgName' => $ImgName]);
 
-                    if($data && $data[0]){
+                    if($EmployeeImgID){
 
                         DB::statement('
                     UPDATE `employees`
                     SET `EmployeeImgID` = :EmployeeImgID
                     WHERE `EmployeeID` = :EmployeeID
-            ', ['EmployeeID' => $EmployeeID, 'EmployeeImgID' => $data[0]]);
+            ', ['EmployeeID' => $EmployeeID, 'EmployeeImgID' => $EmployeeImgID]);
 
-                        return $data[0];
+                        return $EmployeeImgID;
 
                     }//if
 
@@ -474,7 +471,7 @@ class EmployeerHelper {
 
             if($EmployeeID && $ChiefID){
 
-                $data = DB::select('
+                $data = DB::statement('
                 UPDATE `employees` AS e
                 SET e.ChiefID = :ChiefID
                 WHERE e.EmployeeID = :EmployeeID
@@ -505,18 +502,18 @@ class EmployeerHelper {
                 $surName = $SurName ? "'${SurName}'" : 'NULL';
                 $employeeImgID = $EmployeeImgID ? $EmployeeImgID : 'NULL';
 
-                $data = DB::select('
+                $data = DB::statement("
                 UPDATE `employees` AS e
-                SET e.ChiefID = :chiefID,
-                e.PositionID = :PositionID,
-                e.EmployeeImgID = :employeeImgID,
-                e.FirstName = :FirstName,
-                e.LastName = :LastName,
-                e.SurName = :surName,
-                e.Salary = :Salary,
-                e.EmploymentDate = :EmploymentDate
-                WHERE e.EmployeeID = :EmployeeID
-            ', ['chiefID' => $chiefID, 'PositionID' => $PositionID, 'employeeImgID' => $employeeImgID, 'FirstName' => $FirstName, 'LastName' => $LastName, 'surName' => $surName, 'Salary' => $Salary, 'EmploymentDate' => $EmploymentDate, 'EmployeeID' => $EmployeeID]);
+                SET e.ChiefID = ${chiefID},
+                e.PositionID = ${PositionID},
+                e.EmployeeImgID = ${employeeImgID},
+                e.FirstName = '${FirstName}',
+                e.LastName = '${LastName}',
+                e.SurName = ${surName},
+                e.Salary = ${Salary},
+                e.EmploymentDate = '${EmploymentDate}'
+                WHERE e.EmployeeID = ${EmployeeID}
+            ");
 
                 return $data;
 

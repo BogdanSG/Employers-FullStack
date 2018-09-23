@@ -33,6 +33,8 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
   readonly MaxSalaryValue : number = 1000000000;
   readonly MinSalaryValue : number = 1000;
 
+  FilePath = 'Choose file';
+
   constructor(private ActivatedRoute: ActivatedRoute, private Router : Router, private EmployeeService: EmployeeService, private AuthenticationService: AuthenticationService, private Location: Location, private RegexHelperService : RegexHelperService, private PhotoHelperService : PhotoHelperService, private MainMarginService : MainMarginService) {
 
     this.MainMarginService.SetCenterMargin();
@@ -65,6 +67,12 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
     this.AuthenticationService.onLogOut('SingleEmployeeComponent', this.onLogOut.bind(this));
 
   }//constructor
+
+  onFileChange(event){
+
+    this.FilePath = event.srcElement.value;
+
+  }//onFileChange
 
   onSignIn(){
 
@@ -318,6 +326,8 @@ export class SingleEmployeeComponent implements OnInit, IAuthorize {
           this.Employee = data.data[0];
 
           this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace('Z', '');
+
+          this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace(' ', 'T');
 
           if(this.Employee.ImgName){
 

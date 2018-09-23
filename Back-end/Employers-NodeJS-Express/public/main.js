@@ -438,7 +438,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"isAuthorized\">\n  <div style=\"margin-left: 10px; margin-bottom: 70px;\">\n    <div class=\"row\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Settings</h4>\n        <div>\n\n          <div class=\"row\">\n            <div class=\"col-md-1 mb-3\">\n              <label>Limit: </label>\n              <select class=\"form-control\" (change)=\"onLimitChange($event)\">\n                <option>10</option>\n                <option>25</option>\n                <option>50</option>\n                <option>100</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Order By</label>\n              <select class=\"form-control\" (change)=\"onOrderByChange($event)\">\n                <option *ngFor=\"let sort of SortArray\">{{sort}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-2 mb-3\">\n              <label>Sort</label>\n              <select class=\"form-control\" (change)=\"onSortChange($event)\">\n                <option>Asc</option>\n                <option>Desc</option>\n              </select>\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-3 mb-3\">\n              <label>Serch By</label>\n              <select class=\"form-control\" (change)=\"onSearchChange($event)\">\n                <option *ngFor=\"let search of SearchArray\">{{search}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Search</label>\n              <input [(ngModel)]=\"SearchValue\" (keyup)=\"onSearchValueChange()\" type=\"text\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\" style=\"margin-bottom: 10px\">\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onPrevClick()\">Prev</button>\n            </div>\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onNextClick()\">Next</button>\n            </div>\n          </div>\n\n        </div>\n      </div>\n    </div>\n    <table *ngIf=\"employeeList.length > 0\" class=\"table table-hover table-bordered\">\n      <thead class=\"thead-light\">\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Photo</th>\n        <th scope=\"col\">FirstName</th>\n        <th scope=\"col\">LastName</th>\n        <th scope=\"col\">SurName</th>\n        <th scope=\"col\">Position</th>\n        <th scope=\"col\">Has Chief</th>\n        <th scope=\"col\">Salary</th>\n        <th scope=\"col\">Employment Date</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr style=\"cursor: pointer\" *ngFor=\"let employee of employeeList\" (click)=\"onTableClick(employee.EmployeeID)\">\n        <th scope=\"row\">{{employee.EmployeeID}}</th>\n        <td><img src=\"{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}\" class=\"rounded mx-auto d-block\" height=\"40\"></td>\n        <td>{{employee.FirstName}}</td>\n        <td>{{employee.LastName}}</td>\n        <td>{{employee.SurName}}</td>\n        <td>{{employee.Position}}</td>\n        <td>{{employee.ChiefID ? 'True' : 'False'}}</td>\n        <td>{{employee.Salary}}</td>\n        <td>{{getNormalDate(employee.EmploymentDate)}}</td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n<div *ngIf=\"!isAuthorized\">\n  <div class=\"center-content\">\n    <p class=\"big-text\">This Page For Authorized Users</p>\n  </div>\n</div>\n\n"
+module.exports = "<div *ngIf=\"isAuthorized\">\n  <div style=\"margin-left: 10px; margin-bottom: 70px;\">\n    <div class=\"row\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Settings</h4>\n        <div>\n\n          <div class=\"row\">\n            <div class=\"col-md-1 mb-3\">\n              <label>Limit: </label>\n              <select class=\"form-control\" (change)=\"onLimitChange($event)\">\n                <option>10</option>\n                <option>25</option>\n                <option>50</option>\n                <option>100</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Order By</label>\n              <select class=\"form-control\" (change)=\"onOrderByChange($event)\">\n                <option *ngFor=\"let sort of SortArray\">{{sort}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-2 mb-3\">\n              <label>Sort</label>\n              <select class=\"form-control\" (change)=\"onSortChange($event)\">\n                <option>Asc</option>\n                <option>Desc</option>\n              </select>\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-3 mb-3\">\n              <label>Serch By</label>\n              <select class=\"form-control\" (change)=\"onSearchChange($event)\">\n                <option *ngFor=\"let search of SearchArray\">{{search}}</option>\n              </select>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Search</label>\n              <input [(ngModel)]=\"SearchValue\" (input)=\"onSearchValueChange()\" type=\"text\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\" style=\"margin-bottom: 10px\">\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onPrevClick()\">Prev</button>\n            </div>\n            <div class=\"col-md-2\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onNextClick()\">Next</button>\n            </div>\n          </div>\n\n        </div>\n      </div>\n    </div>\n    <table *ngIf=\"employeeList.length > 0\" class=\"table table-hover table-bordered\">\n      <thead class=\"thead-light\">\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Photo</th>\n        <th scope=\"col\">FirstName</th>\n        <th scope=\"col\">LastName</th>\n        <th scope=\"col\">SurName</th>\n        <th scope=\"col\">Position</th>\n        <th scope=\"col\">Has Chief</th>\n        <th scope=\"col\">Salary</th>\n        <th scope=\"col\">Employment Date</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr style=\"cursor: pointer\" *ngFor=\"let employee of employeeList\" (click)=\"onTableClick(employee.EmployeeID)\">\n        <th scope=\"row\">{{employee.EmployeeID}}</th>\n        <td><img src=\"{{getPhotoPath(employee.ImgName) ? getPhotoPath(employee.ImgName) : getDefaultPhoto()}}\" class=\"rounded mx-auto d-block\" height=\"40\"></td>\n        <td>{{employee.FirstName}}</td>\n        <td>{{employee.LastName}}</td>\n        <td>{{employee.SurName}}</td>\n        <td>{{employee.Position}}</td>\n        <td>{{employee.ChiefID ? 'True' : 'False'}}</td>\n        <td>{{employee.Salary}}</td>\n        <td>{{getNormalDate(employee.EmploymentDate)}}</td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n<div *ngIf=\"!isAuthorized\">\n  <div class=\"center-content\">\n    <p class=\"big-text\">This Page For Authorized Users</p>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -521,7 +521,6 @@ var ListComponent = /** @class */ (function () {
             'FirstName',
             'LastName',
             'SurName',
-            'FullName',
             'Salary',
         ];
         this.SortArray = [
@@ -1000,7 +999,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"Employee && Positions\">\n  <div class=\"center-margin\">\n    <div class=\"py-5 text-center\">\n      <img class=\"d-block mx-auto mb-4\" src=\"{{ImgPath}}\" alt=\"\" width=\"420\">\n      <div *ngIf=\"Edit\" class=\"custom-file col-lg-6 col-md-9\">\n        <input id=\"employeeImage\" type=\"file\" class=\"custom-file-input\" accept=\"image/x-png,image/gif,image/jpeg\">\n        <label class=\"custom-file-label\">Choose file</label>\n      </div>\n    </div>\n\n    <div class=\"row\" style=\"margin-bottom: 80px;\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Employee Info</h4>\n        <div class=\"needs-validation\">\n\n          <div class=\"row\">\n            <div class=\"col-md-4 mb-3\">\n              <label>First name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': FirstNameError }\" [(ngModel)]=\"Employee.FirstName\" type=\"text\" class=\"form-control\" placeholder=\"Ivan\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Last name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': LastNameError }\" [(ngModel)]=\"Employee.LastName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanov\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Sur name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': SurNameError }\" [(ngModel)]=\"Employee.SurName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanovich\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Chief</label>\n              <div style=\"background-color: #e9ecef;\" class=\"form-control\">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>ChiefID</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': ChifIDError }\" (keyup)=\"onChiefChange()\" [(ngModel)]=\"Employee.Chief.EmployeeID\" type=\"number\" min=\"1\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-12 mb-6\">\n              <label>Position</label>\n              <div style=\"background-color: #e9ecef; text-align: center;\" class=\"form-control\">{{getPosition(Employee.PositionID) ? getPosition(Employee.PositionID).Position : ''}}</div>\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Employment Date</label>\n              <input [disabled]=\"!Edit\" type=\"datetime-local\" [(ngModel)]=\"Employee.EmploymentDate\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Salary</label>\n              <input [disabled]=\"!Edit\" (change)=\"onSalaryChange($event)\" [(ngModel)]=\"Employee.Salary\" type=\"number\" min=\"{{MinSalaryValue}}\" max=\"{{MaxSalaryValue}}\" step=\"1000\" class=\"form-control\" placeholder=\"100000\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px; margin-bottom: 30px\">\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onEdit()\">Edit</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button [disabled]=\"!Edit\" class=\"btn btn-warning btn-lg btn-block\" (click)=\"onUpdateClick()\">Update</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-danger btn-lg btn-block\" (click)=\"onDelete()\">Delete</button>\n            </div>\n          </div>\n\n          <div *ngIf=\"SuccessMessage\" class=\"alert alert-success\" role=\"alert\">{{SuccessMessage}}</div>\n          <div *ngIf=\"ErrorMessage\" class=\"alert alert-danger\" role=\"alert\">{{ErrorMessage}}</div>\n\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div *ngIf=\"Employee && Positions\">\n  <div class=\"center-margin\">\n    <div class=\"py-5 text-center\">\n      <img class=\"d-block mx-auto mb-4\" src=\"{{ImgPath}}\" alt=\"\" width=\"420\">\n      <div *ngIf=\"Edit\" class=\"custom-file col-lg-6 col-md-9\">\n        <input id=\"employeeImage\" (change)=\"onFileChange($event)\" type=\"file\" class=\"custom-file-input\" accept=\"image/x-png,image/gif,image/jpeg\">\n        <label class=\"custom-file-label\">{{FilePath}}</label>\n      </div>\n    </div>\n\n    <div class=\"row\" style=\"margin-bottom: 80px;\">\n      <div class=\"col-md-12 order-md-1\">\n        <h4 class=\"mb-3\">Employee Info</h4>\n        <div class=\"needs-validation\">\n\n          <div class=\"row\">\n            <div class=\"col-md-4 mb-3\">\n              <label>First name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': FirstNameError }\" [(ngModel)]=\"Employee.FirstName\" type=\"text\" class=\"form-control\" placeholder=\"Ivan\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Last name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': LastNameError }\" [(ngModel)]=\"Employee.LastName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanov\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Sur name</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': SurNameError }\" [(ngModel)]=\"Employee.SurName\" type=\"text\" class=\"form-control\" placeholder=\"Ivanovich\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Chief</label>\n              <div style=\"background-color: #e9ecef;\" class=\"form-control\">{{Employee.Chief.FirstName}} {{Employee.Chief.LastName}} {{Employee.Chief.SurName}}</div>\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>ChiefID</label>\n              <input [disabled]=\"!Edit\" [ngClass]=\"{ 'is-invalid': ChifIDError }\" (input)=\"onChiefChange()\" [(ngModel)]=\"Employee.Chief.EmployeeID\" type=\"number\" min=\"1\" class=\"form-control\" placeholder=\"\">\n            </div>\n          </div>\n\n          <div class=\"row\">\n            <div class=\"col-md-12 mb-6\">\n              <label>Position</label>\n              <div style=\"background-color: #e9ecef; text-align: center;\" class=\"form-control\">{{getPosition(Employee.PositionID) ? getPosition(Employee.PositionID).Position : ''}}</div>\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px\">\n            <div class=\"col-md-8 mb-6\">\n              <label>Employment Date</label>\n              <input [disabled]=\"!Edit\" type=\"datetime-local\" [(ngModel)]=\"Employee.EmploymentDate\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"col-md-4 mb-3\">\n              <label>Salary</label>\n              <input [disabled]=\"!Edit\" (change)=\"onSalaryChange($event)\" [(ngModel)]=\"Employee.Salary\" type=\"number\" min=\"{{MinSalaryValue}}\" max=\"{{MaxSalaryValue}}\" step=\"1000\" class=\"form-control\" placeholder=\"100000\">\n            </div>\n          </div>\n\n          <div *ngIf=\"isAuthorized\" class=\"row\" style=\"margin-top: 10px; margin-bottom: 30px\">\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-primary btn-lg btn-block\" (click)=\"onEdit()\">Edit</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button [disabled]=\"!Edit\" class=\"btn btn-warning btn-lg btn-block\" (click)=\"onUpdateClick()\">Update</button>\n            </div>\n            <div class=\"col-md-4\">\n              <button class=\"btn btn-danger btn-lg btn-block\" (click)=\"onDelete()\">Delete</button>\n            </div>\n          </div>\n\n          <div *ngIf=\"SuccessMessage\" class=\"alert alert-success\" role=\"alert\">{{SuccessMessage}}</div>\n          <div *ngIf=\"ErrorMessage\" class=\"alert alert-danger\" role=\"alert\">{{ErrorMessage}}</div>\n\n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1086,6 +1085,7 @@ var SingleEmployeeComponent = /** @class */ (function () {
         this.MainMarginService = MainMarginService;
         this.MaxSalaryValue = 1000000000;
         this.MinSalaryValue = 1000;
+        this.FilePath = 'Choose file';
         this.MainMarginService.SetCenterMargin();
         this.OldEmployee = {};
         var id = +this.ActivatedRoute.snapshot.params['id'];
@@ -1102,6 +1102,9 @@ var SingleEmployeeComponent = /** @class */ (function () {
         this.AuthenticationService.onSignIn('SingleEmployeeComponent', this.onSignIn.bind(this));
         this.AuthenticationService.onLogOut('SingleEmployeeComponent', this.onLogOut.bind(this));
     } //constructor
+    SingleEmployeeComponent.prototype.onFileChange = function (event) {
+        this.FilePath = event.srcElement.value;
+    }; //onFileChange
     SingleEmployeeComponent.prototype.onSignIn = function () {
         this.isAuthorized = true;
         this.getFullEmployee();
@@ -1279,6 +1282,7 @@ var SingleEmployeeComponent = /** @class */ (function () {
                         if (!(data.code === 200)) return [3 /*break*/, 3];
                         this.Employee = data.data[0];
                         this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace('Z', '');
+                        this.Employee.EmploymentDate = this.Employee.EmploymentDate.replace(' ', 'T');
                         if (this.Employee.ImgName) {
                             this.ImgPath = this.PhotoHelperService.getPhotoPath(this.Employee.ImgName);
                         } //if
@@ -2146,7 +2150,7 @@ var AuthenticationService = /** @class */ (function () {
         this.onSignInCallBacks = new Map();
     } //constructor
     AuthenticationService.prototype.isAuthorized = function () {
-        if (localStorage.getItem('currentUser') && localStorage.getItem('access_token')) {
+        if (localStorage.getItem('currentUser') && localStorage.getItem('token')) {
             var user = JSON.parse(localStorage.getItem('currentUser'));
             return user;
         } //if
@@ -2155,8 +2159,8 @@ var AuthenticationService = /** @class */ (function () {
         } //else
     }; //isAuthorized
     AuthenticationService.prototype.GetToken = function () {
-        if (localStorage.getItem('access_token')) {
-            return JSON.parse(localStorage.getItem('access_token'));
+        if (localStorage.getItem('token')) {
+            return JSON.parse(localStorage.getItem('token'));
         } //if
         return null;
     }; //GetToken
@@ -2205,7 +2209,7 @@ var AuthenticationService = /** @class */ (function () {
     AuthenticationService.prototype.SignIn = function (result) {
         if (result.code === 200 && result.data.token) {
             localStorage.setItem('currentUser', JSON.stringify(result.data.user));
-            localStorage.setItem('access_token', JSON.stringify(result.data.token));
+            localStorage.setItem('token', JSON.stringify(result.data.token));
             this.onSignInCallBacks.forEach(function (callbaks) {
                 callbaks(result.data.user);
             });
@@ -2217,7 +2221,7 @@ var AuthenticationService = /** @class */ (function () {
     }; //SignIn
     AuthenticationService.prototype.logOut = function () {
         localStorage.removeItem('currentUser');
-        localStorage.removeItem('access_token');
+        localStorage.removeItem('token');
         this.onlogOutCallBacks.forEach(function (callbaks) {
             callbaks();
         });
@@ -2253,6 +2257,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmployeeService", function() { return EmployeeService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _authentication_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./authentication.service */ "./src/app/services/authentication.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2299,9 +2304,11 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 
 
+
 var EmployeeService = /** @class */ (function () {
-    function EmployeeService(http) {
+    function EmployeeService(http, AuthenticationService) {
         this.http = http;
+        this.AuthenticationService = AuthenticationService;
     } //constructor
     EmployeeService.prototype.getTreeEmployee = function (employeeID, url) {
         if (url === void 0) { url = '/api/tree-employee'; }
@@ -2325,20 +2332,25 @@ var EmployeeService = /** @class */ (function () {
         });
     }; //getTreeEmployee
     EmployeeService.prototype.getFullEmployee = function (employeeID, token, url) {
-        if (url === void 0) { url = "/api/full-employee?access_token=" + token; }
+        if (url === void 0) { url = "/api/full-employee?token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
             var result, ex_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.http.post(url, { id: employeeID, access_token: token }).toPromise()];
+                        return [4 /*yield*/, this.http.post(url, { id: employeeID, token: token }).toPromise()];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
                         ex_2 = _a.sent();
-                        console.log("Exception: getFullEmployee", ex_2);
+                        if (ex_2.status === 401) {
+                            this.AuthenticationService.logOut();
+                        } //if
+                        else {
+                            console.log("Exception: getFullEmployee", ex_2);
+                        } //else
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2388,21 +2400,26 @@ var EmployeeService = /** @class */ (function () {
         });
     }; //getAllPositions
     EmployeeService.prototype.getEmployeeList = function (data, token, url) {
-        if (url === void 0) { url = "/api/employee-list?access_token=" + token; }
+        if (url === void 0) { url = "/api/employee-list?token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
             var result, ex_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        data.access_token = token;
+                        data.token = token;
                         return [4 /*yield*/, this.http.post(url, data).toPromise()];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
                         ex_5 = _a.sent();
-                        console.log("Exception: getEmployeeList", ex_5);
+                        if (ex_5.status === 401) {
+                            this.AuthenticationService.logOut();
+                        } //if
+                        else {
+                            console.log("Exception: getEmployeeList", ex_5);
+                        } //else
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2410,20 +2427,25 @@ var EmployeeService = /** @class */ (function () {
         });
     }; //getEmployeeList
     EmployeeService.prototype.employeeDelete = function (employeeID, token, url) {
-        if (url === void 0) { url = "/api/employee-delete?access_token=" + token; }
+        if (url === void 0) { url = "/api/employee-delete?token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
             var result, ex_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.http.post(url, { id: employeeID, access_token: token }).toPromise()];
+                        return [4 /*yield*/, this.http.post(url, { id: employeeID, token: token }).toPromise()];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result];
                     case 2:
                         ex_6 = _a.sent();
-                        console.log("Exception: employeeDelete", ex_6);
+                        if (ex_6.status === 401) {
+                            this.AuthenticationService.logOut();
+                        } //if
+                        else {
+                            console.log("Exception: employeeDelete", ex_6);
+                        } //else
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2431,7 +2453,7 @@ var EmployeeService = /** @class */ (function () {
         });
     }; //employeeDelete
     EmployeeService.prototype.employeeUpdate = function (data, token, url) {
-        if (url === void 0) { url = "/api/employee-update?access_token=" + token; }
+        if (url === void 0) { url = "/api/employee-update?token=" + token; }
         return __awaiter(this, void 0, void 0, function () {
             var result, ex_7;
             return __generator(this, function (_a) {
@@ -2444,7 +2466,12 @@ var EmployeeService = /** @class */ (function () {
                         return [2 /*return*/, result];
                     case 2:
                         ex_7 = _a.sent();
-                        console.log("Exception: employeeUpdate", ex_7);
+                        if (ex_7.status === 401) {
+                            this.AuthenticationService.logOut();
+                        } //if
+                        else {
+                            console.log("Exception: employeeUpdate", ex_7);
+                        } //else
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -2455,7 +2482,7 @@ var EmployeeService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"], _authentication_service__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"]])
     ], EmployeeService);
     return EmployeeService;
 }()); //EmployeeService

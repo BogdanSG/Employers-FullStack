@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import {HttpClient, HttpHandler} from '@angular/common/http';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
-  constructor(private http : HttpClient) {
+  constructor(private http : HttpClient, private AuthenticationService : AuthenticationService) {
 
   }//constructor
 
@@ -40,7 +41,17 @@ export class EmployeeService {
     }//try
     catch(ex){
 
-      console.log("Exception: getFullEmployee" , ex);
+      if(ex.status === 401){
+
+        this.AuthenticationService.logOut();
+
+      }//if
+      else {
+
+        console.log("Exception: getFullEmployee" , ex);
+
+      }//else
+
       return null;
 
     }//catch
@@ -96,7 +107,17 @@ export class EmployeeService {
     }//try
     catch (ex) {
 
-      console.log("Exception: getEmployeeList", ex);
+      if(ex.status === 401){
+
+        this.AuthenticationService.logOut();
+
+      }//if
+      else {
+
+        console.log("Exception: getEmployeeList" , ex);
+
+      }//else
+
       return null;
 
     }//catch
@@ -114,7 +135,17 @@ export class EmployeeService {
     }//try
     catch (ex) {
 
-      console.log("Exception: employeeDelete", ex);
+      if(ex.status === 401){
+
+        this.AuthenticationService.logOut();
+
+      }//if
+      else {
+
+        console.log("Exception: employeeDelete" , ex);
+
+      }//else
+
       return null;
 
     }//catch
@@ -131,7 +162,17 @@ export class EmployeeService {
     }//try
     catch (ex) {
 
-      console.log("Exception: employeeUpdate", ex);
+      if(ex.status === 401){
+
+        this.AuthenticationService.logOut();
+
+      }//if
+      else {
+
+        console.log("Exception: employeeUpdate" , ex);
+
+      }//else
+
       return null;
 
     }//catch

@@ -11,6 +11,7 @@ use \Exception;
 use App\Model\Response;
 use Illuminate\Support\Facades\Hash;
 use \Tymon\JWTAuth\Facades\JWTAuth;
+use \Storage;
 
 class ApiController extends Controller {
 
@@ -279,16 +280,291 @@ class ApiController extends Controller {
 
     }//employeeList
 
-    public function employeeDelete(){
+    public function employeeDelete(Request $request){
 
-        return 'employeeDelete';
+        $response = new Response();
+
+        try {
+
+            $EmployeeID = $request->get('id');
+
+            if($EmployeeID){
+
+                if(!$this->ChangeChief($response, $EmployeeID)){
+
+                    return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                }//if
+
+                $ImageName = EmployeerHelper::getEmployeeImgNameByEmployeeID($EmployeeID);
+
+                if($ImageName){
+
+                    Storage::disk('public_img_employees')->delete('$ImageName');
+
+                }//if
+
+                EmployeerHelper::deleteEmployee($EmployeeID);
+
+                $response->code = 200;
+                $response->message = 'Employee deleted';
+                $response->data = [];
+
+                return response(json_encode($response))->header('Content-Type', 'application/json');
+
+            }//if
+            else {
+
+                $response->code = 500;
+                $response->message = 'EmployeeID is undefined';
+                $response->data = [];
+
+                return response(json_encode($response))->header('Content-Type', 'application/json');;
+
+            }//else
+
+        }//try
+        catch (Exception $ex) {
+
+            $response->code = 500;
+            $response->message = $ex;
+            $response->data = [];
+
+            return response(json_encode($response))->header('Content-Type', 'application/json');
+
+        }//catch
 
     }//employeeDelete
 
-    public function employeeUpdate(){
+    public function employeeUpdate(Request $request){
 
-        return 'employeeUpdate';
+        $response = new Response();
+
+        try {
+
+            $EmployeeID = $request->get('EmployeeID');
+            $ChiefID = $request->get('ChiefID') !== 'undefined' ? $request->get('ChiefID') !== 'null' ? $request->get('ChiefID') : null : null;
+            $EmploymentDate = $request->get('EmploymentDate');
+            $FirstName = $request->get('FirstName');
+            $LastName = $request->get('LastName');
+            $SurName = $request->get('SurName');
+            $Salary = $request->get('Salary');
+            $PositionID = 1;
+            $EmployeeImgID = null;
+            $NewFileName = null;
+
+            if($EmployeeID && $EmploymentDate && $FirstName && $LastName && $Salary){
+
+                if(!RegexHelper::IsMatch($FirstName, RegexHelper::EmployeeName())){
+
+                    $response->code = 500;
+                    $response->message = 'Incorrect FirstName';
+                    $response->data = [];
+
+                    return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                }//if
+                else if(!RegexHelper::IsMatch($LastName, RegexHelper::EmployeeName())){
+
+                    $response->code = 500;
+                    $response->message = 'Incorrect LastName';
+                    $response->data = [];
+
+                    return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                }//else if
+                else if ($SurName && !RegexHelper::IsMatch($SurName, RegexHelper::EmployeeName())){
+
+                    $response->code = 500;
+                    $response->message = 'Incorrect SurName';
+                    $response->data = [];
+
+                    return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                }//else if
+
+                $EmployeeImgID = EmployeerHelper::getEmployeeImgIDByEmployeeID($EmployeeID);
+
+                if($request->hasFile('image')){
+
+                    $file = $request->file('image');
+
+                    if($file->getSize() > 10485760){
+
+                        $response->code = 500;
+                        $response->message = 'Size image should not be exceed 10 mb';
+                        $response->data = [];
+
+                        return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                    }//if
+
+                    $ext = $file->extension();
+
+                    $NewFileName = "${EmployeeID}.${ext}";
+
+                    Storage::disk('public_img_employees')->putFileAs('/', $file, $NewFileName);
+
+                    $EmployeeImgID = EmployeerHelper::createOrUpdateImg($EmployeeID, $NewFileName);
+
+                    if($EmployeeImgID){
+
+                        $files = Storage::disk('public_img_employees')->allFiles();
+
+                        foreach ($files as $f) {
+
+                            if(pathinfo($f)['filename'] == $EmployeeID){
+
+                                Storage::disk('public_img_employees')->delete($f);
+
+                            }//if
+
+                        }//foreach
+
+                        Storage::disk('public_img_employees')->putFileAs('/', $file, $NewFileName);
+
+                    }//if
+
+                }//if
+
+                if($ChiefID){
+
+                    if($ChiefID === $EmployeeID){
+
+                        $response->code = 500;
+                        $response->message = 'Employee can not be yourself chief';
+                        $response->data = [];
+
+                        return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                    }//if
+
+                    $PositionID = EmployeerHelper::getPositionIDByEmployeeID($ChiefID);
+
+                    if($PositionID){
+
+                        if($PositionID == 5){
+
+                            $response->code = 500;
+                            $response->message = 'Worker can not be Chief';
+                            $response->data = [];
+
+                            return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                        }//if
+
+                        $PositionID++;
+
+                    }//if
+                    else {
+
+                        $response->code = 500;
+                        $response->message = 'Position Error';
+                        $response->data = [];
+
+                        return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                    }//else
+
+                }//if
+
+                $OldPositionID = EmployeerHelper::getPositionIDByEmployeeID($EmployeeID);
+
+                if($OldPositionID != $PositionID){
+
+                    if(!$this->ChangeChief($response, $EmployeeID)){
+
+                        return response(json_encode($response))->header('Content-Type', 'application/json');
+
+                    }//if
+
+                }//if
+
+                EmployeerHelper::updateEmployee($EmployeeID, $ChiefID, $EmploymentDate, $FirstName, $LastName, $SurName, $Salary, $PositionID, $EmployeeImgID);
+
+                $response->code = 200;
+                $response->message = 'Employee updated';
+                $response->data = [
+                    'NewFileName' => $NewFileName
+                ];
+
+                return response(json_encode($response))->header('Content-Type', 'application/json');
+
+            }//if
+            else {
+
+                $response->code = 500;
+                $response->message = 'Incorrect data';
+                $response->data = [];
+
+                return response(json_encode($response))->header('Content-Type', 'application/json');
+
+            }//else
+
+        }//try
+        catch (Exception $ex) {
+
+            $response->code = 500;
+            $response->message = $ex->getMessage();
+            $response->data = [];
+
+            return response(json_encode($response))->header('Content-Type', 'application/json');
+
+        }//catch
 
     }//employeeUpdate
+
+    private function ChangeChief($response, $EmployeeID){
+
+        $Employees = EmployeerHelper::getEmployeesIDsByChiefID($EmployeeID);
+
+        $PositionID = EmployeerHelper::getPositionIDByEmployeeID($EmployeeID);
+
+        if(!$PositionID){
+
+            $response->code = 500;
+            $response->message = 'Position Error';
+            $response->data = [];
+
+            return false;
+
+        }//if
+
+        if(count($Employees) > 0){
+
+            $ChiefsIds = EmployeerHelper::getEmployeesIDsByPositionID($PositionID);
+
+            if(!$ChiefsIds && count($ChiefsIds) === 0){
+
+                $response->code = 500;
+                $response->message = 'Cheifs Error, command executed';
+                $response->data = [];
+
+                return false;
+
+            }//if
+
+            $EmployeesLength = count($Employees);
+            $ChiefsIdsLength = count($ChiefsIds);
+
+            for($i = 0; $i < $EmployeesLength; $i++){
+
+                do {
+
+                    $RandomChief = $ChiefsIds[rand(0, $ChiefsIdsLength - 1)]->EmployeeID;
+
+                } while ($EmployeeID === $RandomChief);
+
+                EmployeerHelper::updateChiefID($Employees[$i]->EmployeeID, $RandomChief);
+
+            }//for
+
+            return true;
+
+        }//if
+
+        return false;
+
+    }//ChangeChief
 
 }//ApiController

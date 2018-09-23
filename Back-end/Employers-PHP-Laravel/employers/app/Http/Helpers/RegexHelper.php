@@ -18,7 +18,7 @@ class RegexHelper {
 
     public static function EmployeeName(){
 
-        return '/^[^0-9)([\]<>\\\/.{},\'":;`$~#@!%^&*+=|?_-]{1,255}$/mi';
+        return '/^[^0-9)([\]<>\\\\\/.{},\'":;`$~#@!%^&*+=|?_-]{1,255}$/mi';
 
     }//EmployeeName
 

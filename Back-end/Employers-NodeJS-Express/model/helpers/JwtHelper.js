@@ -1,5 +1,5 @@
 const expressJwt = require('express-jwt');
-const User = require('../database/model/User');
+const User = require('../../database/model/User');
 const config = require('../../config.json');
 
 function jwt() {
@@ -12,7 +12,7 @@ function jwt() {
 
 async function isRevoked(req, payload, done) {
 
-    const user = await User.findById(payload.UserID);
+    const user = await User.findById(payload.id);
 
     if (!user) {
 

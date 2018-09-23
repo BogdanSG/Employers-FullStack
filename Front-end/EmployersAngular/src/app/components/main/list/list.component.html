@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-4 mb-3">
               <label>Search</label>
-              <input [(ngModel)]="SearchValue" (keyup)="onSearchValueChange()" type="text" class="form-control" placeholder="">
+              <input [(ngModel)]="SearchValue" (input)="onSearchValueChange()" type="text" class="form-control" placeholder="">
             </div>
           </div>
 
