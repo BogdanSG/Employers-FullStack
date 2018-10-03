@@ -553,7 +553,7 @@ class ApiController extends Controller {
 
                     $RandomChief = $ChiefsIds[rand(0, $ChiefsIdsLength - 1)]->EmployeeID;
 
-                } while ($EmployeeID === $RandomChief);
+                } while ($EmployeeID == $RandomChief);
 
                 EmployeerHelper::updateChiefID($Employees[$i]->EmployeeID, $RandomChief);
 
