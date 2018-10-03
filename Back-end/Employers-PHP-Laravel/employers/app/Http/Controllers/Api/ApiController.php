@@ -300,7 +300,7 @@ class ApiController extends Controller {
 
                 if($ImageName){
 
-                    Storage::disk('public_img_employees')->delete('$ImageName');
+                    Storage::disk('public_img_employees')->delete($ImageName);
 
                 }//if
 
